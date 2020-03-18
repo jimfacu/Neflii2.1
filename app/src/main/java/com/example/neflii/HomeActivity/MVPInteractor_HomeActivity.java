@@ -2,10 +2,21 @@ package com.example.neflii.HomeActivity;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
 import com.example.neflii.HomeActivity.Utils.ServiceApi_HomeActivity;
 import com.example.neflii.HomeActivity.Utils.ServiceRetrofit_HomeActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,11 +25,14 @@ import retrofit2.Response;
 public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interactor {
 
     private ContractHomeActivity.Presenter presenter;
+    private SubsMovie subsMovie;
+    private List<SubsMovie> subsMovieslist;
 
 
     public MVPInteractor_HomeActivity(ContractHomeActivity.Presenter presenter) {
         this.presenter = presenter;
-    }
+        this.subsMovieslist = new ArrayList<>();
+     }
 
     @Override
     public void pedirListaDePeliculasPopularesAlServicio() {
@@ -75,6 +89,28 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
             }
         });
 
+    }
+
+    @Override
+    public void pedirListaDeFilmsSupsAlServicio() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("films");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    subsMovie = ds.getValue(SubsMovie.class);
+                    subsMovieslist.add(subsMovie);
+                }
+                presenter.recibirListaDeFilmsSups(subsMovieslist);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                presenter.falloAlRecibirListaSups();
+            }
+        });
     }
 
 

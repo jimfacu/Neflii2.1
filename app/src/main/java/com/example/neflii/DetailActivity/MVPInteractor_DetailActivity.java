@@ -66,7 +66,7 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
     @Override
     public void pedirListaAFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Films");
+        DatabaseReference myRef = database.getReference("films");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -88,7 +88,7 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
     @Override
     public void guardarListaConNuevaPelicula(List<SubsMovie> subsMovieLists) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("Films");
+        DatabaseReference reference = database.getReference("films");
         reference.setValue(subsMovieLists)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

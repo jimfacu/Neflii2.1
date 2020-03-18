@@ -1,7 +1,10 @@
 package com.example.neflii.HomeActivity;
 
+import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+
+import java.util.List;
 
 public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter {
 
@@ -53,6 +56,21 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
     @Override
     public void falloAlRecibirListaDeGeneros() {
         view.darListaGenerosRecycler(null);
+    }
+
+    @Override
+    public void pedirListaDeFilmsSups() {
+        interactor.pedirListaDeFilmsSupsAlServicio();
+    }
+
+    @Override
+    public void recibirListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
+        view.mostrarListaDeFilmsSups(listSupsFilm);
+    }
+
+    @Override
+    public void falloAlRecibirListaSups() {
+
     }
 }
 

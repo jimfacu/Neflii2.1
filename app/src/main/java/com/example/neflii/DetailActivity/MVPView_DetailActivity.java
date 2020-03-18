@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,13 +32,21 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     private List<SubsMovie> collectionSubsMovies;
     private CardView button_Suscripcion;
     private Movie movieNow;
+    private SubsMovie subsMovieNow;
 
     private DatabaseReference reference;
 
     public static final String ID_Movie = "ID_MOVIE";
     private int id_Movie;
 
-  
+    @BindView(R.id.portada)
+    ImageView imageView_portada;
+
+    @BindView(R.id.tituloDetail)
+    TextView textView_tituloDetail;
+
+    @BindView(R.id.añoDetail)
+    TextView textView_anioDetail;
 
     @BindView(R.id.textOfOverview)
     TextView textView_textOfOverView;
@@ -63,6 +73,10 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
             @Override
             public void onClick(View view) {
                 setFilmOnSups();
+                Intent returnIntent = new Intent();
+                subsMovieNow = new SubsMovie(movieNow.getTitle(),movieNow.getId(),movieNow.getPoster_path(),movieNow.getBackdrop_path());
+                returnIntent.putExtra("NewFilm",subsMovieNow);
+                setResult(Activity.RESULT_OK,returnIntent);
             }
         });
 
@@ -107,22 +121,24 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     }
 
     private void setFilmOnSups(){
-        boolean exist = false;
+        boolean ok = false;
         collectionSubsMovies.clear();
         collectionSubsMovies.addAll(tankCollectionSubsMovies);
         SubsMovie newFilm = new SubsMovie(movieNow.getTitle(),movieNow.getId(),movieNow.getPoster_path(),movieNow.getBackdrop_path());
-        for(SubsMovie films : collectionSubsMovies){
-            if (films.getTitle().equals(newFilm.getTitle())){
-                exist = true;
+        for(SubsMovie film : collectionSubsMovies){
+            if(film.getTitle().equals(newFilm.getTitle())){
+                ok = true;
             }
         }
-        if(exist){
-            Toast.makeText(this, "Ya supscripto a esta pelicula !!", Toast.LENGTH_SHORT).show();
+        if(ok){
+            Toast.makeText(this, "ya estas suscripto a esta pelicula", Toast.LENGTH_SHORT).show();
         }else{
             collectionSubsMovies.add(newFilm);
+            tankCollectionSubsMovies.clear();
+            tankCollectionSubsMovies.addAll(collectionSubsMovies);
+            presenter.recibirListaConNuevaPelicula(tankCollectionSubsMovies);
         }
-        tankCollectionSubsMovies.clear();
-        tankCollectionSubsMovies.addAll(collectionSubsMovies);
+
     }
 
     private void initFirebase(){

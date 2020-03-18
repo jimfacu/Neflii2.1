@@ -1,6 +1,9 @@
 package com.example.neflii.DetailActivity.Entities;
 
-public class Movie {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable {
 
     private String backdrop_path;
     private int id;
@@ -19,6 +22,42 @@ public class Movie {
         this.title = title;
         this.release_date = release_date;
     }
+
+    protected Movie(Parcel in) {
+        backdrop_path = in.readString();
+        id = in.readInt();
+        overview = in.readString();
+        poster_path = in.readString();
+        title = in.readString();
+        release_date = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(backdrop_path);
+        dest.writeInt(id);
+        dest.writeString(overview);
+        dest.writeString(poster_path);
+        dest.writeString(title);
+        dest.writeString(release_date);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public String getBackdrop_path() {
         return backdrop_path;

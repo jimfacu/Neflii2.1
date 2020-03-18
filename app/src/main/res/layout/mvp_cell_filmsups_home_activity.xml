@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/cardView_filmsups_ActivityHome"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="false"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:id="@+id/imageView_filmsups_ActivityHome"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"/>
+
+</androidx.cardview.widget.CardView>
