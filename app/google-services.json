@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "252061118351",
+    "firebase_url": "https://neflii-ed181.firebaseio.com",
+    "project_id": "neflii-ed181",
+    "storage_bucket": "neflii-ed181.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252061118351:android:45e3d756674602652a65fa",
+        "android_client_info": {
+          "package_name": "com.example.neflii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252061118351-j0fco02h6lnq49cjl32iis93mcalnmh4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neflii",
+            "certificate_hash": "c2f3c9a5e3dc9553540eed3902f88f5d4e59dd8d"
+          }
+        },
+        {
+          "client_id": "252061118351-0v8krjggdgjdo4r09buhdonnqb2j412l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4G9IW-gOLTqlCwT28DsQ7IY9J1gA2d4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252061118351-0v8krjggdgjdo4r09buhdonnqb2j412l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

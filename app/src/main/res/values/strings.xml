@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Neflii</string>
+    <string name="TODOS">TODOS</string>
+    <string name="Tv">TV Show Reminder</string>
+    <string name="Categoria">categoria</string>
+    <string name="Titulo">titulo</string>
+
+</resources>
