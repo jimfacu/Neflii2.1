@@ -36,14 +36,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     public static final String ID_Movie = "ID_MOVIE";
     private int id_Movie;
 
-    @BindView(R.id.portada)
-    ImageView imageView_portada;
-
-    @BindView(R.id.tituloDetail)
-    TextView textView_tituloDetail;
-
-    @BindView(R.id.añoDetail)
-    TextView textView_anioDetail;
+  
 
     @BindView(R.id.textOfOverview)
     TextView textView_textOfOverView;
