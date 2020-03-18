@@ -99,6 +99,7 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                subsMovieslist.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     subsMovie = ds.getValue(SubsMovie.class);
                     subsMovieslist.add(subsMovie);

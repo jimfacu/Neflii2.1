@@ -73,14 +73,8 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
             @Override
             public void onClick(View view) {
                 setFilmOnSups();
-                Intent returnIntent = new Intent();
-                subsMovieNow = new SubsMovie(movieNow.getTitle(),movieNow.getId(),movieNow.getPoster_path(),movieNow.getBackdrop_path());
-                returnIntent.putExtra("NewFilm",subsMovieNow);
-                setResult(Activity.RESULT_OK,returnIntent);
             }
-        });
-
-
+    });
     }
     private void reciveListSups() {
         presenter.pedirListaDeSubsAlServicio();

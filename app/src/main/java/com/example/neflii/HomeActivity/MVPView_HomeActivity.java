@@ -34,11 +34,12 @@ import okhttp3.OkHttpClient;
 
 import static com.example.neflii.DetailActivity.MVPView_DetailActivity.ID_Movie;
 
-public class MVPView_HomeActivity extends AppCompatActivity implements ContractHomeActivity.View , Adapter_Films_HomeActivity.CellListener {
+public class MVPView_HomeActivity extends AppCompatActivity implements ContractHomeActivity.View , Adapter_Films_HomeActivity.CellListener, Adapter_FilmsSubs_HomeActivity.CellListenerFilmsSups {
 
     private Adapter_Films_HomeActivity adapterFilmsHomeActivity;
     private ContractHomeActivity.Presenter presenterHomeActivity;
     private Adapter_FilmsSubs_HomeActivity adapterFilmsSubsHomeActivity;
+    private Boolean upLoadList = false;
 
     private List<SubsMovie> subsMovieList = new ArrayList<>();
 
@@ -77,7 +78,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
                 swipe.setRefreshing(false);
             }
         });
-
         presenterHomeActivity = new MVPPresenter_HomeActivity(this);
         initRecycler();
         reciveFilmsSups();
@@ -98,7 +98,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         recyclerViewListFilms.setAdapter(adapterFilmsHomeActivity);
 
         //RecyclerView de las peliculas supscriptas
-        adapterFilmsSubsHomeActivity = new Adapter_FilmsSubs_HomeActivity();
+        adapterFilmsSubsHomeActivity = new Adapter_FilmsSubs_HomeActivity(this);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerViewListFilmsSubs.setLayoutManager(linearLayoutManager1);
         recyclerViewListFilmsSubs.setAdapter(adapterFilmsSubsHomeActivity);
@@ -137,6 +137,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     @Override
     public void mostrarListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
+        subsMovieList.clear();
         subsMovieList.addAll(listSupsFilm);
         adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
     }
@@ -147,20 +148,15 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         Bundle bundle = new Bundle();
         bundle.putInt(ID_Movie,id);
         intent.putExtras(bundle);
-        startActivityForResult(intent,1);
+        startActivity(intent);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                SubsMovie nowMovie =data.getParcelableExtra("NewFilm");
-                subsMovieList.add(nowMovie);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
-    }//onActivityResult
+    public void goToDetailFilmsSups(int id) {
+        Intent intent = new Intent(this, MVPView_DetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID_Movie,id);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }

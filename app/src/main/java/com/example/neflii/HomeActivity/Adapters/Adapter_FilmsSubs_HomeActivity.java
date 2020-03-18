@@ -21,9 +21,11 @@ import java.util.List;
 public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
 
     private List<SubsMovie> subsMovieList;
+    private CellListenerFilmsSups cellListenerFilmsSups;
 
-    public Adapter_FilmsSubs_HomeActivity() {
+    public Adapter_FilmsSubs_HomeActivity(CellListenerFilmsSups cellListenerFilmsSups) {
         this.subsMovieList = new ArrayList<>();
+        this.cellListenerFilmsSups = cellListenerFilmsSups;
     }
 
     @NonNull
@@ -43,6 +45,7 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
         filmsViewHolder.setFilms(subsMovie);
 
     }
+
 
     public void insertFilmsSups(List<SubsMovie> listMovieSups){
         if(listMovieSups != null){
@@ -69,9 +72,19 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
             imageView_FilmsSups = itemView.findViewById(R.id.imageView_filmsups_ActivityHome);
             cardViewFilmsSups = imageView_FilmsSups.findViewById(R.id.cardView_filmsups_ActivityHome);
             imageHelper = new ImageHelper();
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cellListenerFilmsSups.goToDetailFilmsSups(subsMovieList.get(getAdapterPosition()).getId());
+                }
+            });
         }
         public void setFilms(SubsMovie filmsups) {
            Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + filmsups.getPoster_path()).into(imageView_FilmsSups);
         }
+    }
+    public interface CellListenerFilmsSups{
+        void goToDetailFilmsSups(int id);
     }
 }
