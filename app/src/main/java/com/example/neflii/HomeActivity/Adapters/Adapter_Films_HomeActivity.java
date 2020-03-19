@@ -51,7 +51,6 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
         Films films = filmsList.get(position);
         FilmsViewHolder filmsViewHolder = (FilmsViewHolder) holder;
         filmsViewHolder.setFilms(films);
-
     }
 
     public void insertFilms(List<Films> listaDePeliculas) {

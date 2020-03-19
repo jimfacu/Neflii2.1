@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -20,6 +22,7 @@ import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsSubs_HomeActivity;
 import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+import com.example.neflii.HomeActivity.Fragments.MVP_HomeFragmentSearchFilm;
 import com.example.neflii.R;
 
 import java.util.ArrayList;
@@ -35,6 +38,10 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     private Adapter_Films_HomeActivity adapterFilmsHomeActivity;
     private ContractHomeActivity.Presenter presenterHomeActivity;
     private Adapter_FilmsSubs_HomeActivity adapterFilmsSubsHomeActivity;
+
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    private MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm;
 
     private MenuItem mSearch;
     private SearchView mSearchView;
@@ -82,6 +89,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
         @Override
         public boolean onQueryTextChange(String s) {
+            presenterHomeActivity.pedirListaMultiSearch(s);
             return false;
         }
     };
@@ -111,6 +119,16 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     public void reciveGenres(){
         presenterHomeActivity.pedirListaDeGeneros();
+    }
+
+
+    @Override
+    public void mostrarListaMultiSearch(ContainerFilms containerFilms) {
+        if(containerFilms !=null){
+            mvpHomeFragmentSearchFilm= MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms);
+            setFragment(mvpHomeFragmentSearchFilm);
+        }
+
     }
 
     @Override
@@ -177,4 +195,10 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void setFragment(MVP_HomeFragmentSearchFilm fragment){
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityHome_ConteinerFragment,fragment);
+        fragmentTransaction.commit();
+    }
 }

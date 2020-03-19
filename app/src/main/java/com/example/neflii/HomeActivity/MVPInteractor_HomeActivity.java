@@ -35,6 +35,24 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
      }
 
     @Override
+    public void pedirListaMultiSearchAlServicio(String nameFilm) {
+        ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
+        Call<ContainerFilms>  call = serviceApi.getMultiSearchFilms("64312ffd81ef5d7e20afaa0866b9bec6",nameFilm);
+        call.enqueue(new Callback<ContainerFilms>() {
+            @Override
+            public void onResponse(Call<ContainerFilms> call, Response<ContainerFilms> response) {
+                presenter.recibirListaMultiSearch(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ContainerFilms> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    @Override
     public void pedirListaDePeliculasPopularesAlServicio() {
         ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
         Call<ContainerFilms> call = serviceApi.getTrendingFilms("all","week","64312ffd81ef5d7e20afaa0866b9bec6");

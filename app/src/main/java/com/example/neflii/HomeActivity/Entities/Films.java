@@ -1,8 +1,11 @@
 package com.example.neflii.HomeActivity.Entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Films {
+public class Films implements Parcelable {
     private int id;
     private String title;
     private String poster_path;
@@ -16,6 +19,38 @@ public class Films {
         this.backdrop_path = backdrop_path;
         this.genre_ids = genre_ids;
     }
+
+    protected Films(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        poster_path = in.readString();
+        backdrop_path = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(poster_path);
+        dest.writeString(backdrop_path);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Films> CREATOR = new Creator<Films>() {
+        @Override
+        public Films createFromParcel(Parcel in) {
+            return new Films(in);
+        }
+
+        @Override
+        public Films[] newArray(int size) {
+            return new Films[size];
+        }
+    };
 
     public int getId() {
         return id;

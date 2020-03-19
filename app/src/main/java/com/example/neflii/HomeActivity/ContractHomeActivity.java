@@ -9,6 +9,7 @@ import java.util.List;
 public interface ContractHomeActivity {
 
     interface View{
+        void mostrarListaMultiSearch(ContainerFilms containerFilms);
         void mostrarListaDeFilms(ContainerFilms containerFilms);
         void darListaGenerosRecycler(ContainerGenres containerGenres);
         void mostrarMensajeFalloListaFilms();
@@ -17,6 +18,8 @@ public interface ContractHomeActivity {
     }
 
     interface Presenter{
+        void recibirListaMultiSearch(ContainerFilms containerFilms);
+        void pedirListaMultiSearch(String nameFilm);
         void pedirListaDeFilmsPopulares();
         void recibirListaDeFilms(ContainerFilms containerFilms);
         void falloAlRecibirListaDeFilms();
@@ -30,6 +33,7 @@ public interface ContractHomeActivity {
     }
 
     interface Interactor{
+        void pedirListaMultiSearchAlServicio(String nameFilm);
         void pedirListaDePeliculasPopularesAlServicio();
         void pedirListaDeGenerosAlServicio();
         void pedirListaDeFilmsSupsAlServicio();

@@ -19,6 +19,16 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
     }
 
     @Override
+    public void recibirListaMultiSearch(ContainerFilms containerFilms) {
+        view.mostrarListaMultiSearch(containerFilms);
+    }
+
+    @Override
+    public void pedirListaMultiSearch(String nameFilm) {
+        interactor.pedirListaMultiSearchAlServicio(nameFilm);
+    }
+
+    @Override
     public void pedirListaDeFilmsPopulares() {
         interactor.pedirListaDePeliculasPopularesAlServicio();
     }

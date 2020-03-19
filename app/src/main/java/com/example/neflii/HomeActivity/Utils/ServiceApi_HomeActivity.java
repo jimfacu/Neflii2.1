@@ -16,4 +16,7 @@ public interface ServiceApi_HomeActivity {
 
     @GET("genre/movie/list")
     Call<ContainerGenres> getGenresList(@Query("api_key")String api_key);
+
+    @GET("search/multi")
+    Call<ContainerFilms> getMultiSearchFilms(@Query("api_key")String apikey,@Query("query")String nameFilm);
 }
