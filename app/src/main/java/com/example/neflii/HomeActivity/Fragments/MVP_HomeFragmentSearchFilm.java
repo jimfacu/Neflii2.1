@@ -1,4 +1,4 @@
-package com.example.neflii.HomeActivity;
+package com.example.neflii.HomeActivity.Fragments;
 
 
 import android.os.Bundle;

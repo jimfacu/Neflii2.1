@@ -5,6 +5,7 @@
     android:id="@+id/cardView_filmsups_ActivityHome"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/fondo_homeActivity"
     app:cardCornerRadius="10dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="false"

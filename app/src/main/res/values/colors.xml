@@ -5,7 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="NegroToolbar_homeActivity">#060606</color>
-    <color name="LetrasBuscador_homeActivity">#808080</color>
+    <color name="LetrasBuscador_homeActivity">#FFC100</color>
     <color name="fondo_homeActivity">#1B1B1B</color>
     <color name="letraCategoria_homeActivity">#757575</color>
     <color name="fondoCategoriaCell_homeActivity">#344750</color>
