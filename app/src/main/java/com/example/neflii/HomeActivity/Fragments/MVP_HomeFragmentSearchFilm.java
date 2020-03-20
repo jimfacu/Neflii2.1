@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +59,7 @@ public class MVP_HomeFragmentSearchFilm extends Fragment {
         //RecyclerView de las peliculas mas populares
         adapterFilmsMultiSearchHomeActivity = new Adapter_FilmsMultiSearch_HomeActivity();
         @SuppressLint("WrongConstant") LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerViewMultiSearch.addItemDecoration(new DividerItemDecoration(recyclerViewMultiSearch.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewMultiSearch.setLayoutManager(linearLayoutManager);
         recyclerViewMultiSearch.setAdapter(adapterFilmsMultiSearchHomeActivity);
 

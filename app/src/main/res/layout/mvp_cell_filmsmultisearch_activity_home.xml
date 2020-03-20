@@ -11,6 +11,7 @@
         android:id="@+id/image_filmsMultiSearch"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginVertical="10dp"
         android:src="@drawable/xd"
         app:layout_constraintLeft_toLeftOf="parent"
