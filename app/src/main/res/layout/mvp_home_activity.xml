@@ -13,41 +13,40 @@ android:background="@color/fondo_homeActivity">
         android:id="@+id/toolbarBuscador"
         app:layout_constraintTop_toTopOf="parent">
 
+
     <include
         layout="@layout/custom_toolbar" />
+
+
+
     </com.google.android.material.appbar.AppBarLayout>
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
         android:id="@+id/activityHome_ConteinerFragment"
         app:layout_constraintTop_toBottomOf="@id/toolbarBuscador"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="200dp">
+        app:layout_constraintBottom_toTopOf="@id/activityHome_Category">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/activityHome_FilmsSupscriptos"
-        android:layout_marginTop="@dimen/marginTop20"
         android:text="Supscriptos"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/textSize20"
         android:textColor="@color/letraCategoria_homeActivity"
-        app:layout_constraintTop_toBottomOf="@id/toolbarBuscador"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/activityHome_recyclerViewFilmsSups"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/activityHome_recyclerViewFilmsSups"
-        android:layout_marginTop="@dimen/marginTop20"
-        app:layout_constraintTop_toBottomOf="@+id/activityHome_FilmsSupscriptos"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/activityHome_Category"/>
+        android:layout_marginTop="30dp"
+        android:layout_alignTop="@+id/activityHome_FilmsSupscriptos"/>
+    </RelativeLayout>
 
 <TextView
     android:layout_width="wrap_content"
@@ -58,7 +57,7 @@ android:background="@color/fondo_homeActivity">
     android:textStyle="bold"
     android:textSize="@dimen/textSize20"
     android:textColor="@color/letraCategoria_homeActivity"
-    app:layout_constraintTop_toBottomOf="@id/activityHome_recyclerViewFilmsSups"
+    app:layout_constraintTop_toBottomOf="@id/activityHome_ConteinerFragment"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintBottom_toTopOf="@+id/swipeAndRecycler"
     />
@@ -92,6 +91,7 @@ android:background="@color/fondo_homeActivity">
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.HomeActivity.Utils.ImageHelper;
 import com.example.neflii.R;
@@ -58,15 +59,19 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
     }
 
     class FilmsMultiSearch extends RecyclerView.ViewHolder {
-        private ImageView imageView_FilmsSups;
-        private CardView cardViewFilmsSups;
-        private ImageHelper imageHelper;
+        private ImageView imageView_FilmsMultiSearch;
+        private TextView textView_FilmsMultiSearch;
 
         public FilmsMultiSearch(@NonNull View itemView) {
             super(itemView);
+            imageView_FilmsMultiSearch = itemView.findViewById(R.id.image_filmsMultiSearch);
+            textView_FilmsMultiSearch = itemView.findViewById(R.id.tituloFilmsMultiSearch);
+
         }
         public void setFilms(Films films){
 
+            textView_FilmsMultiSearch.setText(films.getTitle());
+            Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + films.getPoster_path()).into(imageView_FilmsMultiSearch);
         }
     }
 
