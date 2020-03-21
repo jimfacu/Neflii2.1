@@ -74,7 +74,6 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
             genresList.addAll(listaDeGeneros);
         }
         notifyDataSetChanged();
-
     }
 
     @Override

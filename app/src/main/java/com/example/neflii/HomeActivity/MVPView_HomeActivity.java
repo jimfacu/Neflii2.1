@@ -22,6 +22,7 @@ import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsSubs_HomeActivity;
 import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.HomeActivity.Fragments.MVP_HomeFragmentSearchFilm;
 import com.example.neflii.R;
 
@@ -47,7 +48,10 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     private SearchView mSearchView;
     private Toolbar toolbar;
 
-    private List<SubsMovie> subsMovieList = new ArrayList<>();
+    private List<SubsMovie> subsMovieList;
+    private ContainerGenres containerGenresList;
+
+
 
     @BindView(R.id.activityHome_recyclerView)
     RecyclerView recyclerViewListFilms;
@@ -73,12 +77,17 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             }
         });
         presenterHomeActivity = new MVPPresenter_HomeActivity(this);
+        initLists();
         initRecycler();
         setToolbar();
         reciveFilmsSups();
         reciveFilms();
         reciveGenres();
 
+    }
+
+    private void initLists() {
+        subsMovieList = new ArrayList<>();
     }
 
     SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
@@ -125,7 +134,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     @Override
     public void mostrarListaMultiSearch(ContainerFilms containerFilms) {
         if(containerFilms !=null){
-            mvpHomeFragmentSearchFilm= MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms);
+            mvpHomeFragmentSearchFilm= MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms,containerGenresList);
             setFragment(mvpHomeFragmentSearchFilm);
         }
 
@@ -140,7 +149,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     @Override
     public void darListaGenerosRecycler(ContainerGenres containerGenres){
         adapterFilmsHomeActivity.insertGenres(containerGenres.getGenres());
-
+        containerGenresList = containerGenres;
     }
 
     @Override

@@ -16,19 +16,26 @@ import android.view.ViewGroup;
 import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsMultiSearch_HomeActivity;
 import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
+import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.R;
+
+import java.util.List;
 
 public class MVP_HomeFragmentSearchFilm extends Fragment {
 
     private static final String ListMultiSearchFilms = "listMultiSearch";
+    private static final String ListMultiSearchGenres = "listGenresMultiSearch";
     private Adapter_FilmsMultiSearch_HomeActivity adapterFilmsMultiSearchHomeActivity;
     private RecyclerView recyclerViewMultiSearch;
     private ContainerFilms containerFilmsMultiSearch;
+    private ContainerGenres containerGenresFilmsMultiSearch;
 
-    public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms) {
+    public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms, ContainerGenres containerGenres) {
         MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ListMultiSearchFilms, containerFilms);
+        bundle.putParcelable(ListMultiSearchGenres,containerGenres);
         mvpHomeFragmentSearchFilm.setArguments(bundle);
         return mvpHomeFragmentSearchFilm;
     }
@@ -49,7 +56,9 @@ public class MVP_HomeFragmentSearchFilm extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null) {
             containerFilmsMultiSearch = bundle.getParcelable(ListMultiSearchFilms);
+            containerGenresFilmsMultiSearch = bundle.getParcelable(ListMultiSearchGenres);
             adapterFilmsMultiSearchHomeActivity.insertFilmsMultiSearch(containerFilmsMultiSearch.getResults());
+            adapterFilmsMultiSearchHomeActivity.insertListGenresMultiSearch(containerGenresFilmsMultiSearch.getGenres());
         }
         return view;
     }
