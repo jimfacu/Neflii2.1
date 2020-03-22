@@ -48,6 +48,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/button_AddFilm"
         android:background="@color/fondo_BuscadorMultiSearch"
         android:text="AGREGAR"
         android:textStyle="bold"

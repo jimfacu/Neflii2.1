@@ -9,6 +9,8 @@ import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
 import com.example.neflii.HomeActivity.Utils.ServiceApi_HomeActivity;
 import com.example.neflii.HomeActivity.Utils.ServiceRetrofit_HomeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -132,5 +134,21 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
         });
     }
 
+    @Override
+    public void recibirListaConNuevaPleiculaParaGuardarEnFirebase(List<SubsMovie> listWithNewsFilms) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("films");
+        reference.setValue(listWithNewsFilms)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            presenter.recibirOk();
+                        }
+                    }
+                });
 
-}
+    }
+    }
+
+

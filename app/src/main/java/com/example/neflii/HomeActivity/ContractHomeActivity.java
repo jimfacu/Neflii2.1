@@ -30,6 +30,8 @@ public interface ContractHomeActivity {
         void pedirListaDeFilmsSups();
         void recibirListaDeFilmsSups(List<SubsMovie> listSupsFilm);
         void falloAlRecibirListaSups();
+        void recibirListaConNuevaPeliculaDeLaView(List<SubsMovie> listWithNewsFilms);
+        void recibirOk();
     }
 
     interface Interactor{
@@ -37,6 +39,7 @@ public interface ContractHomeActivity {
         void pedirListaDePeliculasPopularesAlServicio();
         void pedirListaDeGenerosAlServicio();
         void pedirListaDeFilmsSupsAlServicio();
+        void recibirListaConNuevaPleiculaParaGuardarEnFirebase(List<SubsMovie> listWithNewsFilms);
 
 
     }

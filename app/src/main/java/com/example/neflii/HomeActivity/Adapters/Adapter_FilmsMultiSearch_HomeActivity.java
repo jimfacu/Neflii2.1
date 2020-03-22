@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,11 +27,13 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
     private List<Films> filmsList;
     private List<Films> tankFilmsList;
     private List<Genres> genresListMultiSearch;
+    private CellListenerMultiSearch cellListenerMultiSearch;
 
-    public Adapter_FilmsMultiSearch_HomeActivity() {
+    public Adapter_FilmsMultiSearch_HomeActivity(CellListenerMultiSearch cellListenerMultiSearch) {
         this.filmsList = new ArrayList<>();
         this.tankFilmsList = new ArrayList<>();
         this.genresListMultiSearch = new ArrayList<>();
+        this.cellListenerMultiSearch = cellListenerMultiSearch;
     }
 
     @NonNull
@@ -66,7 +69,6 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
                     if(films.getGenre_ids().size()!=0){
                         tankFilmsList.add(films);
                     }
-
                 }
             }
             filmsList.clear();
@@ -80,16 +82,33 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
         return filmsList.size();
     }
 
+
     class FilmsMultiSearch extends RecyclerView.ViewHolder {
         private ImageView imageView_FilmsMultiSearch;
         private TextView textView_FilmsMultiSearch;
         private TextView textView_filmsMultiSearchCategory;
+        private Button button_AddSups;
 
         public FilmsMultiSearch(@NonNull View itemView) {
             super(itemView);
             imageView_FilmsMultiSearch = itemView.findViewById(R.id.image_filmsMultiSearch);
             textView_FilmsMultiSearch = itemView.findViewById(R.id.tituloFilmsMultiSearch);
             textView_filmsMultiSearchCategory = itemView.findViewById(R.id.category_MultiSearch);
+            button_AddSups = itemView.findViewById(R.id.button_AddFilm);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cellListenerMultiSearch.detailMultiSearch(filmsList.get(getAdapterPosition()).getId());
+                }
+            });
+
+            button_AddSups.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    cellListenerMultiSearch.addFilmSups(filmsList.get(getAdapterPosition()));
+                }
+            });
 
         }
         public void setFilms(Films films){
@@ -108,7 +127,9 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             return categoria;
         }
     }
-
-
+    public interface CellListenerMultiSearch{
+        void detailMultiSearch(int ID);
+        void addFilmSups(Films film);
+    }
 
 }

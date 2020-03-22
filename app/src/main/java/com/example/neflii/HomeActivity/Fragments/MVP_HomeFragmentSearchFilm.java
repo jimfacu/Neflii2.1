@@ -2,6 +2,7 @@ package com.example.neflii.HomeActivity.Fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,12 +18,13 @@ import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsMultiSearch_HomeAct
 import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.R;
 
 import java.util.List;
 
-public class MVP_HomeFragmentSearchFilm extends Fragment {
+public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_FilmsMultiSearch_HomeActivity.CellListenerMultiSearch {
 
     private static final String ListMultiSearchFilms = "listMultiSearch";
     private static final String ListMultiSearchGenres = "listGenresMultiSearch";
@@ -30,6 +32,8 @@ public class MVP_HomeFragmentSearchFilm extends Fragment {
     private RecyclerView recyclerViewMultiSearch;
     private ContainerFilms containerFilmsMultiSearch;
     private ContainerGenres containerGenresFilmsMultiSearch;
+    private GoToDetaiSearchView goToDetaiSearchView;
+
 
     public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms, ContainerGenres containerGenres) {
         MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
@@ -66,11 +70,35 @@ public class MVP_HomeFragmentSearchFilm extends Fragment {
     private void initRecycler(View view) {
 
         //RecyclerView de las peliculas mas populares
-        adapterFilmsMultiSearchHomeActivity = new Adapter_FilmsMultiSearch_HomeActivity();
+        adapterFilmsMultiSearchHomeActivity = new Adapter_FilmsMultiSearch_HomeActivity(this);
         @SuppressLint("WrongConstant") LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerViewMultiSearch.addItemDecoration(new DividerItemDecoration(recyclerViewMultiSearch.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewMultiSearch.setLayoutManager(linearLayoutManager);
         recyclerViewMultiSearch.setAdapter(adapterFilmsMultiSearchHomeActivity);
 
     }
+
+    @Override
+    public void detailMultiSearch(int ID) {
+        goToDetaiSearchView.goToDetailViewSearch(ID);
+    }
+
+    @Override
+    public void addFilmSups(Films film) {
+        goToDetaiSearchView.addFilmToSups(film);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.goToDetaiSearchView = (GoToDetaiSearchView) context;
+    }
+
+
+    public interface GoToDetaiSearchView {
+        void goToDetailViewSearch(int id);
+        void addFilmToSups(Films film);
+    }
+
 }

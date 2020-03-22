@@ -82,5 +82,15 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
     public void falloAlRecibirListaSups() {
 
     }
+
+    @Override
+    public void recibirListaConNuevaPeliculaDeLaView(List<SubsMovie> listWithNewsFilms) {
+        interactor.recibirListaConNuevaPleiculaParaGuardarEnFirebase(listWithNewsFilms);
+    }
+
+    @Override
+    public void recibirOk() {
+
+    }
 }
 
