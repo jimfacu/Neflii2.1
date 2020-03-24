@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="NegroToolbar_homeActivity">#060606</color>
+    <color name="negro">#060606</color>
     <color name="LetrasBuscador_homeActivity">#9B7500</color>
     <color name="fondo_homeActivity">#1B1B1B</color>
     <color name="fondo_BuscadorMultiSearch">#363636</color>

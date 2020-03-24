@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.neflii.DetailActivity.Entities.ContainerSubsMovie;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.DetailActivity.MVPView_DetailActivity;
 import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsSubs_HomeActivity;
@@ -51,6 +52,8 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     private List<SubsMovie> subsMovieList;
     private ContainerGenres containerGenresList;
+    private ContainerSubsMovie containerSubsMovie;
+    private ContainerSubsMovie tankContainerSubsMovie;
     private List<SubsMovie> tankListAddFilm;
     private List<SubsMovie> listOfMoviesSups;
 
@@ -139,7 +142,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     @Override
     public void mostrarListaMultiSearch(ContainerFilms containerFilms) {
         if (containerFilms != null) {
-            mvpHomeFragmentSearchFilm = MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms, containerGenresList);
+            mvpHomeFragmentSearchFilm = MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms, containerGenresList,containerSubsMovie);
             setFragment(mvpHomeFragmentSearchFilm);
         }
 
@@ -154,6 +157,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     public void darListaGenerosRecycler(ContainerGenres containerGenres) {
         adapterFilmsHomeActivity.insertGenres(containerGenres.getGenres());
         containerGenresList = containerGenres;
+        containerSubsMovie = tankContainerSubsMovie;
     }
 
     @Override
@@ -169,12 +173,17 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     @Override
     public void mostrarListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
-        subsMovieList.clear();
-        tankListAddFilm.clear();
-        subsMovieList.addAll(listSupsFilm);
-        tankListAddFilm.addAll(listSupsFilm);
-        adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
-    }
+        if(listSupsFilm != null) {
+            subsMovieList.clear();
+            tankListAddFilm.clear();
+            subsMovieList.addAll(listSupsFilm);
+            tankListAddFilm.addAll(listSupsFilm);
+            adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
+            containerSubsMovie = new ContainerSubsMovie(listSupsFilm);
+
+            }
+        }
+
 
     @Override
     public void goToDetail(int id) {

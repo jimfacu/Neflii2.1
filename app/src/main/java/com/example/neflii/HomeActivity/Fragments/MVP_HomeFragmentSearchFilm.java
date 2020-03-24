@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.neflii.DetailActivity.Entities.ContainerSubsMovie;
 import com.example.neflii.HomeActivity.Adapters.Adapter_FilmsMultiSearch_HomeActivity;
 import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
@@ -28,18 +29,21 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
 
     private static final String ListMultiSearchFilms = "listMultiSearch";
     private static final String ListMultiSearchGenres = "listGenresMultiSearch";
+    private static final String ListSubsMoviesFilms = "listSuubsMoviesFilms";
     private Adapter_FilmsMultiSearch_HomeActivity adapterFilmsMultiSearchHomeActivity;
     private RecyclerView recyclerViewMultiSearch;
     private ContainerFilms containerFilmsMultiSearch;
     private ContainerGenres containerGenresFilmsMultiSearch;
+    private ContainerSubsMovie containerSubsMovie;
     private GoToDetaiSearchView goToDetaiSearchView;
 
 
-    public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms, ContainerGenres containerGenres) {
+    public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms, ContainerGenres containerGenres, ContainerSubsMovie containerSubsMovie) {
         MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ListMultiSearchFilms, containerFilms);
         bundle.putParcelable(ListMultiSearchGenres,containerGenres);
+        bundle.putParcelable(ListSubsMoviesFilms,containerSubsMovie);
         mvpHomeFragmentSearchFilm.setArguments(bundle);
         return mvpHomeFragmentSearchFilm;
     }
@@ -61,6 +65,8 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
         if(bundle != null) {
             containerFilmsMultiSearch = bundle.getParcelable(ListMultiSearchFilms);
             containerGenresFilmsMultiSearch = bundle.getParcelable(ListMultiSearchGenres);
+            containerSubsMovie = bundle.getParcelable(ListSubsMoviesFilms);
+            adapterFilmsMultiSearchHomeActivity.insertListSubsMovies(containerSubsMovie.getSubsMovieList());
             adapterFilmsMultiSearchHomeActivity.insertFilmsMultiSearch(containerFilmsMultiSearch.getResults());
             adapterFilmsMultiSearchHomeActivity.insertListGenresMultiSearch(containerGenresFilmsMultiSearch.getGenres());
         }

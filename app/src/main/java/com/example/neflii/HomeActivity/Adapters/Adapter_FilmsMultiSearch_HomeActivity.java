@@ -1,5 +1,6 @@
 package com.example.neflii.HomeActivity.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.HomeActivity.Utils.ImageHelper;
@@ -27,12 +29,14 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
     private List<Films> filmsList;
     private List<Films> tankFilmsList;
     private List<Genres> genresListMultiSearch;
+    private List<SubsMovie> subsListMovies;
     private CellListenerMultiSearch cellListenerMultiSearch;
 
     public Adapter_FilmsMultiSearch_HomeActivity(CellListenerMultiSearch cellListenerMultiSearch) {
         this.filmsList = new ArrayList<>();
         this.tankFilmsList = new ArrayList<>();
         this.genresListMultiSearch = new ArrayList<>();
+        this.subsListMovies = new ArrayList<>();
         this.cellListenerMultiSearch = cellListenerMultiSearch;
     }
 
@@ -61,6 +65,15 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             notifyDataSetChanged();
         }
     }
+
+    public void insertListSubsMovies(List<SubsMovie> subsMovieList){
+        if(subsMovieList != null){
+            subsListMovies.clear();
+            subsListMovies.addAll(subsMovieList);
+            notifyDataSetChanged();
+        }
+    }
+
     public void insertFilmsMultiSearch(List<Films> listaDePeliculas) {
         if (listaDePeliculas != null) {
             tankFilmsList.clear();
@@ -111,10 +124,16 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             });
 
         }
+        @SuppressLint("ResourceAsColor")
         public void setFilms(Films films){
             textView_FilmsMultiSearch.setText(films.getTitle());
             textView_filmsMultiSearchCategory.setText(setCategoria(films));
             Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + films.getPoster_path()).into(imageView_FilmsMultiSearch);
+            if(chekeoSups(films)){
+                button_AddSups.setText("Agregado");
+                button_AddSups.setTextColor(R.color.negro);
+                button_AddSups.setBackgroundResource(R.color.Blanco);
+            }
         }
         private String setCategoria(Films films) {
             String categoria = "";
@@ -125,6 +144,16 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
                 }
             }
             return categoria;
+        }
+
+        private boolean chekeoSups(Films films){
+            boolean ok = false;
+            for(SubsMovie subsMovie : subsListMovies){
+                if(subsMovie.getId() == films.getId()){
+                    ok = true;
+                }
+            }
+            return ok;
         }
     }
     public interface CellListenerMultiSearch{

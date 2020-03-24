@@ -4,6 +4,8 @@
     <string name="Tv">TV Show Reminder</string>
     <string name="Categoria">categoria</string>
     <string name="Titulo">titulo</string>
+    <string name="Suscripto">Desuscribirse</string>
+    <string name="Supscribirse">Suscribirse</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

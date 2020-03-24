@@ -72,6 +72,7 @@ android:background="@drawable/filmms"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/textView_Suscripcion"
         android:text="Suscribirme"
         android:textColor="@color/Blanco"
         android:textStyle="bold"
