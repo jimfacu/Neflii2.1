@@ -19,45 +19,40 @@ public class MVPPresenter_DetailActivity implements Contract_DetailActivity.Pres
 
     }
 
+    //Peticion de peliculas mediante ID
     @Override
-    public void pedirPeliculaMendianteID(int id) {
+    public void pedirPeliculaMendianteIDAlServicio(int id) {
         interactor.pedirPleiculaAlServicioID(id);
     }
-
-
-
     @Override
-    public void recibirPelicula(Movie movie) {
+    public void recibirPeliculaMedianteID(Movie movie) {
         view.mostrarDetallePelicula(movie);
     }
-
     @Override
-    public void falloAlRecibirListaDeFilms(Movie movie) {
-
+    public void falloAlRecibirPeliculaMedianteID() {
+        view.falloAlRecibirPeliculaMedianteID();
+    }
+    @Override
+    public void falloConRetrofitPeliculaMedianteID() {
+        view.falloConRetrofitPeliculaMedianteID();
     }
 
+    //Peticion de peliculas suscriptas
     @Override
-    public void falloConRetrofit() {
-
-    }
-
-    @Override
-    public void pedirListaDeSubsAlServicio() {
+    public void pedirListaDePeliculasSuscriptasAlServicio() {
         interactor.pedirListaAFirebase();
     }
-
     @Override
-    public void falloAlDescargarListadeFirebase() {
-        view.falloAlDescargarListaDeFilms();
-    }
-
-
-
-    @Override
-    public void recibirListaDeFilmsDelServicio(List<SubsMovie> subsMovieList) {
+    public void recibirListaDePeliculasSuscriptas(List<SubsMovie> subsMovieList) {
         view.setearListaDeFilms(subsMovieList);
     }
 
+    @Override
+    public void falloAlDescargarListadePeliculasSuscriptas() {
+        view.falloAlDescargarListaDePeliculasSuscriptas();
+    }
+
+    //Lista con nueva pelicula desde la view
     @Override
     public void recibirListaConNuevaPelicula(List<SubsMovie> subsMovieLists) {
         interactor.guardarListaConNuevaPelicula(subsMovieLists);
@@ -66,6 +61,5 @@ public class MVPPresenter_DetailActivity implements Contract_DetailActivity.Pres
     @Override
     public void recibirOk() {
         view.recibirOkDelPresenter();
-
     }
 }

@@ -44,30 +44,22 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
-                    presenter.recibirPelicula(response.body());
-                    Log.d("ERROR", "EL CODIGO DE ERROR ES PERO ENTRO: " + response.code());
+                    presenter.recibirPeliculaMedianteID(response.body());
                 } else {
-                    presenter.falloAlRecibirListaDeFilms(null);
-                    Log.d("ERROR", "EL CODIGO DE ERROR ES: " + response.code());
-                    Log.d("ERROR0", "EL ERROR ES" + response.message());
-                    Log.d("ERROR", "EL CODIGO DE ERROR ES: " + response.errorBody());
+                    presenter.falloAlRecibirPeliculaMedianteID();
                 }
             }
-
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                presenter.falloConRetrofit();
-
+                presenter.falloConRetrofitPeliculaMedianteID();
             }
         });
 
     }
-
     @Override
     public void pedirListaAFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("films");
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -75,12 +67,12 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
                     subsMovie = ds.getValue(SubsMovie.class);
                     subsMovieslist.add(subsMovie);
                 }
-                presenter.recibirListaDeFilmsDelServicio(subsMovieslist);
+                presenter.recibirListaDePeliculasSuscriptas(subsMovieslist);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                presenter.falloAlDescargarListadeFirebase();
+                presenter.falloAlDescargarListadePeliculasSuscriptas();
             }
         });
     }
@@ -98,6 +90,5 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
                         }
                     }
                 });
-
     }
 }

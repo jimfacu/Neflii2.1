@@ -7,15 +7,32 @@
     <string name="Tv">TV Show Reminder</string>
     <string name="Categoria">Categoria</string>
     <string name="Suscriptos">Suscriptos</string>
+    <string name="Ingrese_nombre_de_pelicula_a_Buscar">Ingrese nombre de pelicula a Buscar</string>
     
     //DetailActivity
     <string name="Titulo">titulo</string>
     <string name="Suscribirme">Suscribirme</string>
     <string name="año">2006</string>
     <string name="Overview">Overview</string>
+    <string name="ya_estas_suscripto_a_esta_pelicula">Ya estas suscripto a esta pelicula</string>
 
     //cellSearchView
     <string name="Agregar">AGREGAR</string>
+
+    //Mensaje de errores
+    <string name="Fallo_al_recibir_lista_multi_search">Fallo al recibir lista multi search!</string>
+    <string name="Fallo_con_Retrofit_lista_multi_search">Fallo con Retrofit lista multi search!</string>
+    <string name="Fallo_al_recibir_lista_peliculas_populares">Fallo al recibir lista peliculas populares!</string>
+    <string name="Fallo_con_retrofit_lista_films_populares">Fallo con retrofit lista films populares!</string>
+    <string name="Fallo_al_recibir_lista_de_generos">Fallo al recibir lista de generos!</string>
+    <string name="Fallo_con_Retrofit_lista_de_generos">Fallo con Retrofit lista de generos!</string>
+    <string name="Fallo_al_recibir_lista_de_peliculas_suscriptas">Fallo al recibir lista de peliculas suscriptas!</string>
+    <string name="Fallo_de_Retrofit_lista_de_peliculas_suscriptas">Fallo de Retrofit lista de peliculas suscriptas!</string>
+    <string name="Exito_al_añadir_la_nueva_Pelicula">Exito al añadir la nueva Pelicula!</string>
+    <string name="Fallo_descarga_de_pelicula_mediante_id">Fallo descarga de pelicula mediante ID!</string>
+    <string name="Se_agrego_la_pelicula_correctamente">Se_agrego_la_pelicula_correctamente!</string>}
+    <string name="Fallo_con_retrofit_pelicula_mediante_ID">Fallo con retrofit pelicula mediante ID</string>
+    <string name="Error_de_conexion_a_Internet">"Error de conexion a Internet"</string>
 
 
     <string name="Suscripto">Desuscribirse</string>

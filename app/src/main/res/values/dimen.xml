@@ -11,4 +11,5 @@
     <dimen name="margin25">25dp</dimen>
     <dimen name="marginTop60">60dp</dimen>
     <dimen name="marginVertical10">10dp</dimen>
+    <dimen name="paddingTop55">55dp</dimen>
 </resources>

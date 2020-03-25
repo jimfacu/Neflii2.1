@@ -39,8 +39,4 @@ public class ContainerGenres implements Parcelable {
     public List<Genres> getGenres() {
         return genres;
     }
-
-    public void setGenres(List<Genres> genres) {
-        this.genres = genres;
-    }
 }

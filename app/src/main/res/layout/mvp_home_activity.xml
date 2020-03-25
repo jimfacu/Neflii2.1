@@ -20,17 +20,13 @@ android:background="@color/fondo_homeActivity">
         android:layout_height="match_parent"
         android:id="@+id/swipeToRefresh"
         >
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/marginTop60"
         android:id="@+id/activityHome_ConteinerFragment"
-        app:layout_constraintTop_toBottomOf="@id/toolbarBuscador"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
+        android:paddingTop="@dimen/paddingTop55"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +34,7 @@ android:background="@color/fondo_homeActivity">
         android:text="@string/Suscriptos"
         android:textStyle="bold"
         android:textSize="@dimen/textSize20"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/marginTop20"
         android:textColor="@color/letraCategoria_homeActivity"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -47,7 +43,7 @@ android:background="@color/fondo_homeActivity">
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:id="@+id/activityHome_recyclerViewFilmsSups"
-        android:layout_marginTop="@dimen/marginTop30"
+        android:layout_marginTop="@dimen/marginTop20"
         app:layout_constraintTop_toBottomOf="@+id/activityHome_FilmsSupscriptos"/>
 
 

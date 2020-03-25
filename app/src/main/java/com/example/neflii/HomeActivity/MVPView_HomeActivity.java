@@ -27,7 +27,6 @@ import com.example.neflii.HomeActivity.Adapters.Adapter_Films_HomeActivity;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
 import com.example.neflii.HomeActivity.Entities.Films;
-import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.HomeActivity.Fragments.MVP_HomeFragmentSearchFilm;
 import com.example.neflii.R;
 
@@ -120,7 +119,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         mSearch = menu.findItem(R.id.searchView_BuscadorDeFilm_activityHome);
         mSearchView = (SearchView) mSearch.getActionView();
         mSearchView.setOnQueryTextListener(onQueryTextListener);
-        mSearchView.setQueryHint("Ingrese nombre de pelicula a Buscar");
+        mSearchView.setQueryHint(getResources().getString(R.string.Ingrese_nombre_de_pelicula_a_Buscar));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -155,7 +154,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             recibirListaDeFilmsSuscriptos();
             recibirListaDeGeneros();
         }else{
-            Toast.makeText(this, "Error de conexion a Internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.Error_de_conexion_a_Internet), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -248,7 +247,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             }
         }
         if(ok){
-            Toast.makeText(this, "Ya estas suscripto a esta pelicula", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.ya_estas_suscripto_a_esta_pelicula), Toast.LENGTH_SHORT).show();
         }else{
             listOfMoviesSups.add(newFilm);
             tankListAddFilm.clear();
@@ -303,50 +302,50 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     @Override
     public void mostrarMensajeFalloListaMultiSearch() {
-        Toast.makeText(this, "Fallo al recibir lista multi search!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getResources().getString(R.string.Fallo_al_recibir_lista_multi_search), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloRetrofitMultiSearch() {
-        Toast.makeText(this, "Fallo con Retrofit lista multi search!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Fallo_con_Retrofit_lista_multi_search), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloFilmsPopulares() {
-        Toast.makeText(this, "Fallo al recibir lista peliculas populares!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Fallo_al_recibir_lista_peliculas_populares), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloRetrofitFilmsPopulares() {
-        Toast.makeText(this, "Fallo con retrofit lista films populares!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getResources().getString(R.string.Fallo_con_retrofit_lista_films_populares), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloListaDeGeneros() {
-        Toast.makeText(this, "Fallo al recibir lista de generos!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getResources().getString(R.string.Fallo_al_recibir_lista_de_generos), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloRetrofitGeneros() {
-        Toast.makeText(this, "Fallo con Retrofit lista de generos", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Fallo_con_Retrofit_lista_de_generos), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloListaFilmsSuscriptos() {
-        Toast.makeText(this, "Fallo al recibir lista de peliculas suscriptas", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Fallo_al_recibir_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeFalloRetrofitFilmsSuscriptos() {
-        Toast.makeText(this, "Fallo de Retrofit lista de peliculas suscriptas", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Fallo_de_Retrofit_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void mostrarMensajeExitoAñadirPeliculaNueva() {
-        Toast.makeText(this, "Exito al añadir la nueva Pelicula", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.Exito_al_añadir_la_nueva_Pelicula), Toast.LENGTH_SHORT).show();
     }
     private boolean internetAvalible(){
-        boolean connected = false;
+        boolean connected;
         ConnectivityManager connectivityManager = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
@@ -355,10 +354,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             connected = false;
         }
         return connected;
-
     }
-
-
 }
 
 

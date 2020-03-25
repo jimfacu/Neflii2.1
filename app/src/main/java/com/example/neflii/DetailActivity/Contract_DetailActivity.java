@@ -10,18 +10,26 @@ public interface Contract_DetailActivity {
     interface View{
         void mostrarDetallePelicula(Movie movie);
         void setearListaDeFilms(List<SubsMovie> subsMovieList);
-        void falloAlDescargarListaDeFilms();
+        void falloAlRecibirPeliculaMedianteID();
+        void falloConRetrofitPeliculaMedianteID();
+        void falloAlDescargarListaDePeliculasSuscriptas();
+        void falloConRetrofitPeliculasSuscriptas();
         void recibirOkDelPresenter();
     }
 
     interface Presenter{
-        void pedirPeliculaMendianteID(int id);
-        void recibirPelicula(Movie movie);
-        void falloAlRecibirListaDeFilms(Movie movie);
-        void falloConRetrofit();
-        void pedirListaDeSubsAlServicio();
-        void falloAlDescargarListadeFirebase();
-        void recibirListaDeFilmsDelServicio(List<SubsMovie> subsMovieList);
+        //Pelicula mediante ID
+        void pedirPeliculaMendianteIDAlServicio(int id);
+        void recibirPeliculaMedianteID(Movie movie);
+        void falloAlRecibirPeliculaMedianteID();
+        void falloConRetrofitPeliculaMedianteID();
+
+        //Lista de peliculas suscriptas
+        void pedirListaDePeliculasSuscriptasAlServicio();
+        void recibirListaDePeliculasSuscriptas(List<SubsMovie> subsMovieList);
+        void falloAlDescargarListadePeliculasSuscriptas();
+
+        //Guardar lista de peliculas suscriptas con nueva pelicula
         void recibirListaConNuevaPelicula(List<SubsMovie> collectionFilms);
         void recibirOk();
     }

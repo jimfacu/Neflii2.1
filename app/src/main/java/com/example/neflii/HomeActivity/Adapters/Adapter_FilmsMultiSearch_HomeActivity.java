@@ -11,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.HomeActivity.Entities.Genres;
-import com.example.neflii.HomeActivity.Utils.ImageHelper;
 import com.example.neflii.R;
 
 import java.util.ArrayList;
@@ -58,6 +56,7 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
 
     }
 
+    //Recibimos lista de Generos
     public void insertListGenresMultiSearch(List<Genres> genresList){
         if(genresList!= null){
             genresListMultiSearch.clear();
@@ -66,6 +65,7 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
         }
     }
 
+    //Recibimos lista de peliculas suscriptas
     public void insertListSubsMovies(List<SubsMovie> subsMovieList){
         if(subsMovieList != null){
             subsListMovies.clear();
@@ -74,10 +74,12 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
         }
     }
 
+    //Recibimos lista multi search
     public void insertFilmsMultiSearch(List<Films> listaDePeliculas) {
         if (listaDePeliculas != null) {
             tankFilmsList.clear();
             for(Films films: listaDePeliculas){
+                //Eliminamos peliculas sin titulo o imagen
                 if(films.getTitle()!= null & films.getPoster_path() != null ){
                     if(films.getGenre_ids().size()!=0){
                         tankFilmsList.add(films);
@@ -142,7 +144,6 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
         private String setCategoria(Films films) {
             String categoria = "";
             for (Genres genres : genresListMultiSearch) {
-                Log.d("GenreList", "el nombre de la categoria es" + genres.getName());
                 if (films.getGenre_ids().get(0) == genres.getId()) {
                     categoria = genres.getName();
                 }
@@ -150,6 +151,7 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             return categoria;
         }
 
+        //Chequeo si la pelicula ya esta en mi lista de suscriptas
         private boolean chekeoSups(Films films){
             boolean ok = false;
             for(SubsMovie subsMovie : subsListMovies){

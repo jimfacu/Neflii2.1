@@ -1,7 +1,5 @@
 package com.example.neflii.HomeActivity;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
@@ -51,9 +49,9 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
             }
             @Override
             public void onFailure(Call<ContainerFilms> call, Throwable t) {
-                presenter.falloConRetrofitDeMultiSearch();
-            }
-        });
+                    presenter.falloConRetrofitDeMultiSearch();
+        }
+    });
     }
 
     @Override

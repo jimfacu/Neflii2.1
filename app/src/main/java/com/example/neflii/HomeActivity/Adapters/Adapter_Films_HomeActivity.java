@@ -42,7 +42,6 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.mvp_cell_home_activity, parent, false);
         FilmsViewHolder viewHolder = new FilmsViewHolder(view);
-
         return viewHolder;
     }
 
@@ -53,9 +52,11 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
         filmsViewHolder.setFilms(films);
     }
 
+    //Recibimos lista de peliculas populares
     public void insertFilms(List<Films> listaDePeliculas) {
         if (listaDePeliculas != null) {
             filmsListFilter.clear();
+            //Eliminamos las peliculas sin titulo
             for (Films films : listaDePeliculas) {
                 if (films.getTitle() != null) {
                     filmsListFilter.add(films);
@@ -68,6 +69,7 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
         }
     }
 
+    //Recibimos lista de generos
     public void insertGenres(List<Genres> listaDeGeneros) {
         if (listaDeGeneros != null) {
             genresList.clear();
@@ -110,6 +112,7 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
             category.setText(setCategoria(films));
         }
 
+        //Metodo para ponerle el contraste a las vistas del Recycler
         private ColorMatrixColorFilter setColorMatrix() {
 
             ColorMatrix colorMatrix = new ColorMatrix();
@@ -118,10 +121,10 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
             return filter;
         }
 
+        //Analizamos la lista de generos con la pelicula que tenemos en el adapterPosition
         private String setCategoria(Films films) {
             String categoria = "";
             for (Genres genres : genresList) {
-                Log.d("GenreList", "el nombre de la categoria es" + genres.getName());
                 if (films.getGenre_ids().get(0) == genres.getId()) {
                     categoria = genres.getName();
                 }
@@ -129,6 +132,8 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
             return categoria;
         }
     }
+
+    //Interfaz del recycler
     public interface CellListener{
         void goToDetail(int id);
     }

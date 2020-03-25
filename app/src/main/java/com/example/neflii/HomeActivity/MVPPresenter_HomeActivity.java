@@ -1,9 +1,5 @@
 package com.example.neflii.HomeActivity;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
@@ -24,7 +20,9 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
 
     @Override
     public void pedirListaMultiSearch(String nameFilm) {
-        interactor.pedirListaMultiSearchAlServicio(nameFilm);
+        if(!nameFilm.equals("")){
+            interactor.pedirListaMultiSearchAlServicio(nameFilm);
+        }
     }
     @Override
     public void recibirListaMultiSearch(ContainerFilms containerFilms) {

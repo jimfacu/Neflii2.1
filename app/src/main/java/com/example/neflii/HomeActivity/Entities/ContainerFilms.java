@@ -48,8 +48,4 @@ public class ContainerFilms implements Parcelable {
     public List<Films> getResults() {
         return results;
     }
-
-    public void setResults(List<Films> results) {
-        this.results = results;
-    }
 }

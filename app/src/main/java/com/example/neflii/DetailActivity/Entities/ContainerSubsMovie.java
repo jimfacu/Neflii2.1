@@ -41,8 +41,5 @@ public class ContainerSubsMovie implements Parcelable {
     public List<SubsMovie> getSubsMovieList() {
         return subsMovieList;
     }
-
-    public void setSubsMovieList(List<SubsMovie> subsMovieList) {
-        this.subsMovieList = subsMovieList;
-    }
 }
+

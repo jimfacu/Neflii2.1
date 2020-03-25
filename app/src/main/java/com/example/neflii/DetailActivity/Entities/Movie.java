@@ -13,7 +13,6 @@ public class Movie implements Parcelable {
     private String release_date;
 
 
-
     public Movie(String backdrop_path, int id, String overview, String poster_path, String title, String release_date) {
         this.backdrop_path = backdrop_path;
         this.id = id;
@@ -63,10 +62,6 @@ public class Movie implements Parcelable {
         return backdrop_path;
     }
 
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
-    }
-
     public int getId() {
         return id;
     }
@@ -79,31 +74,18 @@ public class Movie implements Parcelable {
         return overview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
 
     public String getPoster_path() {
         return poster_path;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getRelease_date() {
         return release_date;
-    }
-
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
     }
 }

@@ -43,10 +43,8 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
         SubsMovie subsMovie = subsMovieList.get(position);
         FilmsSupsViewHolder filmsViewHolder = (FilmsSupsViewHolder) holder;
         filmsViewHolder.setFilms(subsMovie);
-
     }
-
-
+    //Recibo lista de peliculas suscriptas
     public void insertFilmsSups(List<SubsMovie> listMovieSups){
         if(listMovieSups != null){
             subsMovieList.clear();
@@ -62,17 +60,11 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
 
     class FilmsSupsViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView_FilmsSups;
-        private CardView cardViewFilmsSups;
-        private ImageHelper imageHelper;
 
 
         public FilmsSupsViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imageView_FilmsSups = itemView.findViewById(R.id.imageView_filmsups_ActivityHome);
-            cardViewFilmsSups = imageView_FilmsSups.findViewById(R.id.cardView_filmsups_ActivityHome);
-            imageHelper = new ImageHelper();
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

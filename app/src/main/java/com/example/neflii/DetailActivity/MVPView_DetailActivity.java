@@ -68,24 +68,48 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         ButterKnife.bind(this);
         presenter = new MVPPresenter_DetailActivity(this);
         initFirebase();
-        reciveListSups();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             id_Movie = bundle.getInt(ID_Movie);
         }
         button_Suscripcion.setOnClickListener(suscripcionListener);
-        requestMovie();
+        peticionesDeListas();
+        backToHome();
     }
 
-    private void reciveListSups() {
-        presenter.pedirListaDeSubsAlServicio();
+    //Inicializamos Listas y vistas
+    private void initFirebase() {
+        button_Suscripcion = findViewById(R.id.suscribirse);
+        tankCollectionSubsMovies = new ArrayList<>();
+        collectionSubsMovies = new ArrayList<>();
     }
 
-    private void requestMovie() {
-        presenter.pedirPeliculaMendianteID(id_Movie);
-
+    //Peticiones de listas
+    private void peticionesDeListas(){
+        pedirListaDePeliculasSuscriptas();
+        pedirPeliculaAlServicio();
     }
 
+    private void pedirListaDePeliculasSuscriptas() {
+        presenter.pedirListaDePeliculasSuscriptasAlServicio();
+    }
+
+    private void pedirPeliculaAlServicio() {
+        presenter.pedirPeliculaMendianteIDAlServicio(id_Movie);
+    }
+
+    //Guardamos la lista de peliculas suscriptas en la lista auxiliar
+    @Override
+    public void setearListaDeFilms(List<SubsMovie> subsMovieList) {
+        tankCollectionSubsMovies.clear();
+        if (subsMovieList != null) {
+            tankCollectionSubsMovies.addAll(subsMovieList);
+        }
+    }
+
+
+
+    //Mostramos el detalle de la pelicula
     @SuppressLint("ResourceAsColor")
     @Override
     public void mostrarDetallePelicula(Movie movie) {
@@ -96,26 +120,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         Glide.with(this).load("https://image.tmdb.org/t/p/original" + movie.getPoster_path()).into(imageView_portada);
     }
 
-    @Override
-    public void setearListaDeFilms(List<SubsMovie> subsMovieList) {
-        tankCollectionSubsMovies.clear();
-        if (subsMovieList != null) {
-            tankCollectionSubsMovies.addAll(subsMovieList);
-        }
-
-    }
-
-    @Override
-    public void falloAlDescargarListaDeFilms() {
-        Toast.makeText(this, "Fallo descarga de lista de films", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void recibirOkDelPresenter() {
-        Toast.makeText(this, "Se subio la info", Toast.LENGTH_SHORT).show();
-
-    }
-
+    //Guardamos la pelicula , si estamos suscriptos , mostramos mensaje
     private void setFilmOnSups() {
         boolean ok = false;
         collectionSubsMovies.clear();
@@ -127,7 +132,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
             }
         }
         if (ok) {
-            Toast.makeText(this, "ya estas suscripto a esta pelicula", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.ya_estas_suscripto_a_esta_pelicula), Toast.LENGTH_SHORT).show();
         } else {
             collectionSubsMovies.add(newFilm);
             tankCollectionSubsMovies.clear();
@@ -136,20 +141,45 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         }
     }
 
-    private void initFirebase() {
-        button_Suscripcion = findViewById(R.id.suscribirse);
-        tankCollectionSubsMovies = new ArrayList<>();
-        collectionSubsMovies = new ArrayList<>();
+    //Mensaje de errores
+    @Override
+    public void falloAlDescargarListaDePeliculasSuscriptas() {
+        Toast.makeText(this,getResources().getString(R.string.Fallo_al_recibir_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void falloConRetrofitPeliculasSuscriptas() {
+        Toast.makeText(this, getResources().getString(R.string.Fallo_de_Retrofit_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void falloAlRecibirPeliculaMedianteID() {
+        Toast.makeText(this, getResources().getString(R.string.Fallo_descarga_de_pelicula_mediante_id), Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void falloConRetrofitPeliculaMedianteID() {
+        Toast.makeText(this, getResources().getString(R.string.Fallo_con_retrofit_pelicula_mediante_ID), Toast.LENGTH_SHORT).show();
+    }
 
-       View.OnClickListener suscripcionListener = new View.OnClickListener() {
+    @Override
+    public void recibirOkDelPresenter() {
+        Toast.makeText(this,getResources().getString(R.string.Exito_al_añadir_la_nueva_Pelicula), Toast.LENGTH_SHORT).show();
+    }
+    View.OnClickListener suscripcionListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setFilmOnSups();
                 }
             };
+
+    private void backToHome(){
+        imageView_BackToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MVPView_DetailActivity.super.onBackPressed();
+            }
+        });
+    }
 }
 
 
