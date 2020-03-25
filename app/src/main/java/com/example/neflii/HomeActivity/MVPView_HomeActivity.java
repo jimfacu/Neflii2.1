@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +70,9 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     @BindView(R.id.swipeToRefresh)
     SwipeRefreshLayout swipe;
+
+    @BindView(R.id.progressBarMainActivity)
+    ProgressBar progressBar_MainActivity;
 
 
     @Override
@@ -150,6 +155,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     //Peticion de listas para la HomeActivity
     private void peticionDeListas(){
         if(internetAvalible()){
+            progressBar_MainActivity.setVisibility(View.VISIBLE);
             recibirListaDeFilmsPopulares();
             recibirListaDeFilmsSuscriptos();
             recibirListaDeGeneros();
@@ -180,11 +186,17 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     @Override
     public void mostrarListaDeFilms(ContainerFilms containerFilms) {
+        if(progressBar_MainActivity.isShown()){
+            progressBar_MainActivity.setVisibility(View.GONE);
+        }
         adapterFilmsHomeActivity.insertFilms(containerFilms.getResults());
     }
 
     @Override
     public void mostrarListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
+        if(progressBar_MainActivity.isShown()){
+            progressBar_MainActivity.setVisibility(View.GONE);
+        }
         if(listSupsFilm != null) {
             subsMovieList.clear();
             tankListAddFilm.clear();

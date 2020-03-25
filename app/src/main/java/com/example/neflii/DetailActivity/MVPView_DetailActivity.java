@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,9 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     @BindView(R.id.textView_Suscripcion)
     TextView textView_suscripcion;
 
+    @BindView(R.id.progressBarDetailActivity)
+    ProgressBar progressBar_DetailActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
 
     //Peticiones de listas
     private void peticionesDeListas(){
+        progressBar_DetailActivity.setVisibility(View.VISIBLE);
         pedirListaDePeliculasSuscriptas();
         pedirPeliculaAlServicio();
     }
@@ -118,6 +123,9 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         textView_textOfOverView.setText(movie.getOverview());
         textView_anioDetail.setText(movie.getRelease_date().substring(0, 4));
         Glide.with(this).load("https://image.tmdb.org/t/p/original" + movie.getPoster_path()).into(imageView_portada);
+        if(progressBar_DetailActivity.isShown()){
+            progressBar_DetailActivity.setVisibility(View.GONE);
+        }
     }
 
     //Guardamos la pelicula , si estamos suscriptos , mostramos mensaje
