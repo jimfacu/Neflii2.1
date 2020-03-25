@@ -43,15 +43,17 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
         call.enqueue(new Callback<ContainerFilms>() {
             @Override
             public void onResponse(Call<ContainerFilms> call, Response<ContainerFilms> response) {
-                presenter.recibirListaMultiSearch(response.body());
+                if(response.isSuccessful()){
+                    presenter.recibirListaMultiSearch(response.body());
+                }else{
+                    presenter.falloAlRecibirListaMultiSearch();
+                }
             }
-
             @Override
             public void onFailure(Call<ContainerFilms> call, Throwable t) {
-
+                presenter.falloConRetrofitDeMultiSearch();
             }
         });
-
     }
 
     @Override
@@ -62,22 +64,14 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
             @Override
             public void onResponse(Call<ContainerFilms> call, Response<ContainerFilms> response) {
                 if(response.isSuccessful()){
-                    presenter.recibirListaDeFilms(response.body());
-
-                    Log.d("ERROR","EL CODIGO DE ERROR ES PERO ENTRO: "+response.code());
+                    presenter.recibirListaDeFilmsPopulares(response.body());
                 }else{
-                    presenter.falloAlRecibirListaDeFilms();
-
-                    Log.d("ERROR","EL CODIGO DE ERROR ES: "+response.code());
-                    Log.d("ERROR0","EL ERROR ES"+response.message())   ;
-                    Log.d("ERROR","EL CODIGO DE ERROR ES: "+response.errorBody());
+                    presenter.falloAlRecibirListaDeFilmsPopulares();
                 }
             }
-
             @Override
             public void onFailure(Call<ContainerFilms> call, Throwable t) {
-                presenter.falloConRetrofit();
-                Log.d("ERROR CON RETROFIT","EL MENSAJE DE ERROR ES: "+t.getMessage());
+                presenter.falloConRetrofitDeFilmsPopulares();
             }
         });
     }
@@ -86,26 +80,18 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
     public void pedirListaDeGenerosAlServicio() {
         ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
         Call<ContainerGenres> call = serviceApi.getGenresList("64312ffd81ef5d7e20afaa0866b9bec6");
-
         call.enqueue(new Callback<ContainerGenres>() {
             @Override
             public void onResponse(Call<ContainerGenres> call, Response<ContainerGenres> response) {
                 if(response.isSuccessful()){
                     presenter.recibirListaDeGenero(response.body());
-                    Log.d("ERROR","EL CODIGO DE ERROR ES PERO ENTRO: "+response.code());
                 }else{
                     presenter.falloAlRecibirListaDeGeneros();
-
-                    Log.d("ERROR","EL CODIGO DE ERROR ES: "+response.code());
-                    Log.d("ERROR0","EL ERROR ES"+response.message())   ;
-                    Log.d("ERROR","EL CODIGO DE ERROR ES: "+response.errorBody());
                 }
             }
-
             @Override
             public void onFailure(Call<ContainerGenres> call, Throwable t) {
-                presenter.falloConRetrofit();
-                Log.d("ERROR CON RETROFIT","EL MENSAJE DE ERROR ES: "+t.getMessage());
+                presenter.falloConRetrofitDeListaDeGeneros();
             }
         });
 
@@ -115,7 +101,6 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
     public void pedirListaDeFilmsSupsAlServicio() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("films");
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,7 +111,6 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
                 }
                 presenter.recibirListaDeFilmsSups(subsMovieslist);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 presenter.falloAlRecibirListaSups();
@@ -143,12 +127,11 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            presenter.recibirOk();
+                            presenter.recibirOkDeListaConNuevaPelicula();
                         }
                     }
                 });
-
     }
-    }
+}
 
 

@@ -1,11 +1,24 @@
 <resources>
     <string name="app_name">Neflii</string>
+    
+    //HomeActivity  
+    
     <string name="TODOS">TODOS</string>
     <string name="Tv">TV Show Reminder</string>
-    <string name="Categoria">categoria</string>
+    <string name="Categoria">Categoria</string>
+    <string name="Suscriptos">Suscriptos</string>
+    
+    //DetailActivity
     <string name="Titulo">titulo</string>
+    <string name="Suscribirme">Suscribirme</string>
+    <string name="año">2006</string>
+    <string name="Overview">Overview</string>
+
+    //cellSearchView
+    <string name="Agregar">AGREGAR</string>
+
+
     <string name="Suscripto">Desuscribirse</string>
-    <string name="Supscribirse">Suscribirse</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

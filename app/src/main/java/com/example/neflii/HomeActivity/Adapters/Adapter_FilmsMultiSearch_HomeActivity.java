@@ -117,9 +117,13 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             });
 
             button_AddSups.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceAsColor")
                 @Override
                 public void onClick(View view) {
                     cellListenerMultiSearch.addFilmSups(filmsList.get(getAdapterPosition()));
+                    button_AddSups.setText("Agregado");
+                    button_AddSups.setTextColor(R.color.negro);
+                    button_AddSups.setBackgroundResource(R.color.Blanco);
                 }
             });
 

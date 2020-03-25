@@ -1,7 +1,10 @@
 package com.example.neflii.HomeActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +56,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     private List<SubsMovie> subsMovieList;
     private ContainerGenres containerGenresList;
     private ContainerSubsMovie containerSubsMovie;
-    private ContainerSubsMovie tankContainerSubsMovie;
     private List<SubsMovie> tankListAddFilm;
     private List<SubsMovie> listOfMoviesSups;
 
@@ -74,49 +76,23 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mvp_home_activity);
         ButterKnife.bind(this);
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                reciveGenres();
-                swipe.setRefreshing(false);
-            }
-        });
-        presenterHomeActivity = new MVPPresenter_HomeActivity(this);
         initLists();
         initRecycler();
         setToolbar();
-        reciveFilmsSups();
-        reciveFilms();
-        reciveGenres();
+        setSwipe();
+        presenterHomeActivity = new MVPPresenter_HomeActivity(this);
+        peticionDeListas();
 
     }
-
+    // Inicializo las listas
     private void initLists() {
         subsMovieList = new ArrayList<>();
         tankListAddFilm = new ArrayList<>();
         listOfMoviesSups = new ArrayList<>();
     }
 
-    SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String s) {
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String s) {
-            presenterHomeActivity.pedirListaMultiSearch(s);
-            return false;
-        }
-    };
-
-
-    private void reciveFilmsSups() {
-        presenterHomeActivity.pedirListaDeFilmsSups();
-    }
-
+    //Inicializo los recycler
     private void initRecycler() {
-
         //RecyclerView de las peliculas mas populares
         adapterFilmsHomeActivity = new Adapter_Films_HomeActivity(this);
         @SuppressLint("WrongConstant") LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -130,79 +106,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         recyclerViewListFilmsSubs.setAdapter(adapterFilmsSubsHomeActivity);
     }
 
-    public void reciveFilms() {
-        presenterHomeActivity.pedirListaDeFilmsPopulares();
-    }
-
-    public void reciveGenres() {
-        presenterHomeActivity.pedirListaDeGeneros();
-    }
-
-
-    @Override
-    public void mostrarListaMultiSearch(ContainerFilms containerFilms) {
-        if (containerFilms != null) {
-            mvpHomeFragmentSearchFilm = MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms, containerGenresList,containerSubsMovie);
-            setFragment(mvpHomeFragmentSearchFilm);
-        }
-
-    }
-
-    @Override
-    public void mostrarListaDeFilms(ContainerFilms containerFilms) {
-        adapterFilmsHomeActivity.insertFilms(containerFilms.getResults());
-    }
-
-    @Override
-    public void darListaGenerosRecycler(ContainerGenres containerGenres) {
-        adapterFilmsHomeActivity.insertGenres(containerGenres.getGenres());
-        containerGenresList = containerGenres;
-        containerSubsMovie = tankContainerSubsMovie;
-    }
-
-    @Override
-    public void mostrarMensajeFalloListaFilms() {
-        Toast.makeText(this, "Fallo al bajar la lista", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void mostrarMensajeFalloRetrofit() {
-        Toast.makeText(this, "Fallo con Retrofit", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public void mostrarListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
-        if(listSupsFilm != null) {
-            subsMovieList.clear();
-            tankListAddFilm.clear();
-            subsMovieList.addAll(listSupsFilm);
-            tankListAddFilm.addAll(listSupsFilm);
-            adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
-            containerSubsMovie = new ContainerSubsMovie(listSupsFilm);
-
-            }
-        }
-
-
-    @Override
-    public void goToDetail(int id) {
-        Intent intent = new Intent(this, MVPView_DetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(ID_Movie, id);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    @Override
-    public void goToDetailFilmsSups(int id) {
-        Intent intent = new Intent(this, MVPView_DetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(ID_Movie, id);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
+    //Toolbar y Menu
     @SuppressLint("ResourceAsColor")
     private void setToolbar() {
         toolbar = findViewById(R.id.noFakeToolbar);
@@ -220,28 +124,108 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setFragment(MVP_HomeFragmentSearchFilm fragment) {
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.activityHome_ConteinerFragment, fragment);
-        fragmentTransaction.commit();
+    //SearchView!
+    SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            presenterHomeActivity.pedirListaMultiSearch(s);
+            return false;
+        }
+    };
+    //Swipe !
+    private void setSwipe(){
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+             public void onRefresh() {
+                peticionDeListas();
+                swipe.setRefreshing(false);
+         }
+     });
     }
 
-    private boolean collapseActionView() {
-        boolean open=false;
-        if(mSearchView.isIconified()){
-            open = true;
+    //Peticion de listas para la HomeActivity
+    private void peticionDeListas(){
+        if(internetAvalible()){
+            recibirListaDeFilmsPopulares();
+            recibirListaDeFilmsSuscriptos();
+            recibirListaDeGeneros();
+        }else{
+            Toast.makeText(this, "Error de conexion a Internet", Toast.LENGTH_SHORT).show();
         }
-        return open;
+    }
+
+    //Metodos de peticiones de listas
+    public void recibirListaDeFilmsPopulares() {
+        presenterHomeActivity.pedirListaDeFilmsPopulares();
+    }
+    private void recibirListaDeFilmsSuscriptos() {
+        presenterHomeActivity.pedirListaDeFilmsSups();
+    }
+    public void recibirListaDeGeneros() {
+        presenterHomeActivity.pedirListaDeGeneros();
+    }
+
+    //Mostrar las listas recibidas
+    @Override
+    public void mostrarListaMultiSearch(ContainerFilms containerFilms) {
+        if (containerFilms != null) {
+            mvpHomeFragmentSearchFilm = MVP_HomeFragmentSearchFilm.buildFragmentPetDetail(containerFilms, containerGenresList,containerSubsMovie);
+            setFragment(mvpHomeFragmentSearchFilm);
+        }
     }
 
     @Override
-    public void onBackPressed() {
-        if (!collapseActionView()) {
-            removeFragment();
+    public void mostrarListaDeFilms(ContainerFilms containerFilms) {
+        adapterFilmsHomeActivity.insertFilms(containerFilms.getResults());
+    }
+
+    @Override
+    public void mostrarListaDeFilmsSups(List<SubsMovie> listSupsFilm) {
+        if(listSupsFilm != null) {
+            subsMovieList.clear();
+            tankListAddFilm.clear();
+            subsMovieList.addAll(listSupsFilm);
+            tankListAddFilm.addAll(listSupsFilm);
+            adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
+            //Guardamos la lista recibida en el container de peliculas suscriptas para mandarsela al fragment
+            containerSubsMovie = new ContainerSubsMovie(listSupsFilm);
         }
     }
 
+    @Override
+    public void darListaGenerosRecycler(ContainerGenres containerGenres) {
+        adapterFilmsHomeActivity.insertGenres(containerGenres.getGenres());
+        //Guardamos la lista recibida en el container de generos para mandarsela al fragment
+        containerGenresList = containerGenres;
+    }
+
+
+    //Ir al detalle de la pelicula seleccionada mediante una ID
+    @Override
+    public void goToDetail(int id) {
+        Intent intent = new Intent(this, MVPView_DetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID_Movie, id);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    //Ir al detalle de la pelicula suscripta mediante una ID
+    @Override
+    public void goToDetailFilmsSups(int id) {
+        Intent intent = new Intent(this, MVPView_DetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID_Movie, id);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    //Ir al detalle de la pelicula buscada mediante un ID
     @Override
     public void goToDetailViewSearch(int id) {
         Intent intent = new Intent(this, MVPView_DetailActivity.class);
@@ -250,11 +234,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         intent.putExtras(bundle);
         removeFragment();
         startActivity(intent);
-    }
-
-    @Override
-    public void addFilmToSups(Films film) {
-        setFilmOnSups(film);
     }
 
     //Guardamos la pelicula en firebase
@@ -269,7 +248,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             }
         }
         if(ok){
-            Toast.makeText(this, "ya estas suscripto a esta pelicula", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ya estas suscripto a esta pelicula", Toast.LENGTH_SHORT).show();
         }else{
             listOfMoviesSups.add(newFilm);
             tankListAddFilm.clear();
@@ -277,16 +256,106 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             adapterFilmsSubsHomeActivity.insertFilmsSups(tankListAddFilm);
             presenterHomeActivity.recibirListaConNuevaPeliculaDeLaView(tankListAddFilm);
         }
-
     }
 
+    //Interfaz del Fragment
+    //Agregar una pelicula a la lista de suscriptas seleccionada en el fragment
+    @Override
+    public void addFilmToSups(Films film) {
+        setFilmOnSups(film);
+    }
 
+    //Creamos el fragment del buscador de peliculas
+    private void setFragment(MVP_HomeFragmentSearchFilm fragment) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityHome_ConteinerFragment, fragment);
+        fragmentTransaction.commit();
+    }
 
+    //Removemos el fragment creado , si tenemos mas de uno le llegaria por parametro cual fragment quiere remover
     private void removeFragment(){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(mvpHomeFragmentSearchFilm);
         fragmentTransaction.commit();
+    }
+
+    //Chequeamos si el search view sigue activo
+    private boolean collapseActionView() {
+        boolean open=false;
+        if(mSearchView.isIconified()){
+            open = true;
+        }
+        return open;
+    }
+    //Cuando el search view se cierra , removemos el fragment , puede mejorar
+    @Override
+    public void onBackPressed() {
+        if (collapseActionView()) {
+            removeFragment();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
+    //Mensajes de errores
+
+    @Override
+    public void mostrarMensajeFalloListaMultiSearch() {
+        Toast.makeText(this, "Fallo al recibir lista multi search!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloRetrofitMultiSearch() {
+        Toast.makeText(this, "Fallo con Retrofit lista multi search!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloFilmsPopulares() {
+        Toast.makeText(this, "Fallo al recibir lista peliculas populares!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloRetrofitFilmsPopulares() {
+        Toast.makeText(this, "Fallo con retrofit lista films populares!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloListaDeGeneros() {
+        Toast.makeText(this, "Fallo al recibir lista de generos!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloRetrofitGeneros() {
+        Toast.makeText(this, "Fallo con Retrofit lista de generos", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloListaFilmsSuscriptos() {
+        Toast.makeText(this, "Fallo al recibir lista de peliculas suscriptas", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeFalloRetrofitFilmsSuscriptos() {
+        Toast.makeText(this, "Fallo de Retrofit lista de peliculas suscriptas", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void mostrarMensajeExitoAñadirPeliculaNueva() {
+        Toast.makeText(this, "Exito al añadir la nueva Pelicula", Toast.LENGTH_SHORT).show();
+    }
+    private boolean internetAvalible(){
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            connected = true;
+        }else{
+            connected = false;
+        }
+        return connected;
+
     }
 
 
