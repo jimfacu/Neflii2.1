@@ -15,9 +15,11 @@
     <string name="año">2006</string>
     <string name="Overview">Overview</string>
     <string name="ya_estas_suscripto_a_esta_pelicula">Ya estas suscripto a esta pelicula</string>
+    <string name="Poster_Path">https://image.tmdb.org/t/p/original</string>
 
     //cellSearchView
     <string name="Agregar">AGREGAR</string>
+    <string name="Agregado">AGREGADO</string>
 
     //Mensaje de errores
     <string name="Fallo_al_recibir_lista_multi_search">Fallo al recibir lista multi search!</string>
@@ -36,6 +38,13 @@
 
 
     <string name="Suscripto">Desuscribirse</string>
+    
+    //Interactor
+    <string name="Api_Key">64312ffd81ef5d7e20afaa0866b9bec6</string>
+    <string name="Films">"films"</string>
+
+    //Adapters
+    <string name="Poster_MultiSearch_300">"https://image.tmdb.org/t/p/w300"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

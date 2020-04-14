@@ -1,13 +1,15 @@
 package com.example.neflii.DetailActivity;
 
-import android.util.Log;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
 import com.example.neflii.DetailActivity.Entities.Movie;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.DetailActivity.Utils.ServiceApi_DetailActivity;
-import com.example.neflii.DetailActivity.Utils.ServiceRetrofit_DetailActivity;
+import com.example.neflii.HomeActivity.Utils.Constants;
+import com.example.neflii.HomeActivity.Utils.ServiceRetrofit_HomeActivity;
+import com.example.neflii.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -26,53 +28,52 @@ import retrofit2.Response;
 public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Interactor {
 
     private Contract_DetailActivity.Presenter presenter;
-    private List<SubsMovie> subsMovieslist;
-    private SubsMovie subsMovie;
+    private Context context;
 
-    public MVPInteractor_DetailActivity(Contract_DetailActivity.Presenter presenter) {
+    public MVPInteractor_DetailActivity(Contract_DetailActivity.Presenter presenter,Context context) {
         this.presenter = presenter;
-        this.subsMovie = new SubsMovie();
-        this.subsMovieslist = new ArrayList<>();
+        this.context = context;
     }
 
 
     @Override
     public void pedirPleiculaAlServicioID(int id) {
-        ServiceApi_DetailActivity serviceApi = ServiceRetrofit_DetailActivity.getInstance().create(ServiceApi_DetailActivity.class);
-        Call<Movie> call = serviceApi.getMovieById(id, "64312ffd81ef5d7e20afaa0866b9bec6", "en-US");
+        ServiceApi_DetailActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_DetailActivity.class);
+        Call<Movie> call = serviceApi.getMovieById(id, context.getString(R.string.Api_Key),Constants.KEY_EN_US);
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
                     presenter.recibirPeliculaMedianteID(response.body());
                 } else {
-                    presenter.falloAlRecibirPeliculaMedianteID();
+                    presenter.recibirMensajeErrorInteractor(context.getResources().getString(R.string.Fallo_descarga_de_pelicula_mediante_id));
                 }
             }
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                presenter.falloConRetrofitPeliculaMedianteID();
+                presenter.recibirMensajeErrorInteractor(context.getResources().getString(R.string.Fallo_con_retrofit_pelicula_mediante_ID));
             }
         });
 
     }
     @Override
     public void pedirListaAFirebase() {
+
+        List<SubsMovie> subsMovieslist = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("films");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    subsMovie = ds.getValue(SubsMovie.class);
+                    SubsMovie subsMovie = ds.getValue(SubsMovie.class);
                     subsMovieslist.add(subsMovie);
                 }
                 presenter.recibirListaDePeliculasSuscriptas(subsMovieslist);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                presenter.falloAlDescargarListadePeliculasSuscriptas();
+                presenter.recibirMensajeErrorInteractor(context.getResources().getString(R.string.Fallo_al_recibir_lista_de_peliculas_suscriptas));
             }
         });
     }
@@ -86,7 +87,7 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            presenter.recibirOk();
+                            presenter.recibirOk(context.getResources().getString(R.string.Exito_al_añadir_la_nueva_Pelicula));
                         }
                     }
                 });

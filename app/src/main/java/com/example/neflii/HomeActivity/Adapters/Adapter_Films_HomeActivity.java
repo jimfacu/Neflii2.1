@@ -19,19 +19,22 @@ import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
 
     private List<Films> filmsList;
     private List<Films> filmsListFilter;
-    private List<Genres> genresList;
+    private HashMap<Integer,String> mapGenres;
+    private Context context;
     private CellListener cellListener;
 
-    public Adapter_Films_HomeActivity(CellListener cellListener) {
+    public Adapter_Films_HomeActivity(CellListener cellListener, Context context) {
         this.filmsList = new ArrayList<>();
         this.filmsListFilter = new ArrayList<>();
-        this.genresList = new ArrayList<>();
+        this.mapGenres = new HashMap<>();
+        this.context = context;
         this.cellListener = cellListener;
     }
 
@@ -72,10 +75,10 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
     //Recibimos lista de generos
     public void insertGenres(List<Genres> listaDeGeneros) {
         if (listaDeGeneros != null) {
-            genresList.clear();
-            genresList.addAll(listaDeGeneros);
+           for(Genres genres :listaDeGeneros){
+               mapGenres.put(genres.getId(),genres.getName());
+           }
         }
-        notifyDataSetChanged();
     }
 
     @Override
@@ -107,29 +110,17 @@ public class Adapter_Films_HomeActivity extends RecyclerView.Adapter {
 
         public void setFilms(Films films) {
             titulo.setText(films.getTitle());
-            Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + films.getBackdrop_path()).into(imagen_populares);
+            Glide.with(itemView).load(context.getResources().getString(R.string.Poster_MultiSearch_300) + films.getBackdrop_path()).into(imagen_populares);
             imagen_populares.setColorFilter(setColorMatrix());
-            category.setText(setCategoria(films));
+            category.setText(mapGenres.get(films.getGenre_ids().get(0)));
         }
 
         //Metodo para ponerle el contraste a las vistas del Recycler
         private ColorMatrixColorFilter setColorMatrix() {
-
             ColorMatrix colorMatrix = new ColorMatrix();
             colorMatrix.setSaturation(0);
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
             return filter;
-        }
-
-        //Analizamos la lista de generos con la pelicula que tenemos en el adapterPosition
-        private String setCategoria(Films films) {
-            String categoria = "";
-            for (Genres genres : genresList) {
-                if (films.getGenre_ids().get(0) == genres.getId()) {
-                    categoria = genres.getName();
-                }
-            }
-            return categoria;
         }
     }
 

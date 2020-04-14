@@ -19,6 +19,8 @@ import com.example.neflii.HomeActivity.Entities.ContainerGenres;
 import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.R;
 
+import java.util.HashMap;
+
 public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_FilmsMultiSearch_HomeActivity.CellListenerMultiSearch {
 
     private static final String ListMultiSearchFilms = "listMultiSearch";
@@ -31,14 +33,14 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
 
     //Container de listas
     private ContainerFilms containerFilmsMultiSearch;
-    private ContainerGenres containerGenresFilmsMultiSearch;
     private ContainerSubsMovie containerSubsMovie;
+    private ContainerGenres containerGenres;
 
     //Interfaz
     private GoToDetaiSearchView goToDetaiSearchView;
 
     //Metodo donde recibimos la informacion desde la Acitivity
-    public static MVP_HomeFragmentSearchFilm buildFragmentPetDetail(ContainerFilms containerFilms, ContainerGenres containerGenres, ContainerSubsMovie containerSubsMovie) {
+    public static MVP_HomeFragmentSearchFilm buildFragmentMultiSearch(ContainerFilms containerFilms, ContainerGenres containerGenres, ContainerSubsMovie containerSubsMovie) {
         MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ListMultiSearchFilms, containerFilms);
@@ -64,18 +66,18 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
         Bundle bundle = getArguments();
         if(bundle != null) {
             containerFilmsMultiSearch = bundle.getParcelable(ListMultiSearchFilms);
-            containerGenresFilmsMultiSearch = bundle.getParcelable(ListMultiSearchGenres);
             containerSubsMovie = bundle.getParcelable(ListSubsMoviesFilms);
+            containerGenres = bundle.getParcelable(ListMultiSearchGenres);
+            adapterFilmsMultiSearchHomeActivity.insertListGenres(containerGenres);
             adapterFilmsMultiSearchHomeActivity.insertListSubsMovies(containerSubsMovie.getSubsMovieList());
             adapterFilmsMultiSearchHomeActivity.insertFilmsMultiSearch(containerFilmsMultiSearch.getResults());
-            adapterFilmsMultiSearchHomeActivity.insertListGenresMultiSearch(containerGenresFilmsMultiSearch.getGenres());
         }
         return view;
     }
 
 
     private void initRecycler(View view) {
-        adapterFilmsMultiSearchHomeActivity = new Adapter_FilmsMultiSearch_HomeActivity(this);
+        adapterFilmsMultiSearchHomeActivity = new Adapter_FilmsMultiSearch_HomeActivity(this,getContext());
         @SuppressLint("WrongConstant") LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerViewMultiSearch.addItemDecoration(new DividerItemDecoration(recyclerViewMultiSearch.getContext(), DividerItemDecoration.VERTICAL));
         recyclerViewMultiSearch.setLayoutManager(linearLayoutManager);

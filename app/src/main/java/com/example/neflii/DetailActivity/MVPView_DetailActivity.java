@@ -70,14 +70,14 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mvp_detail_activity);
         ButterKnife.bind(this);
-        presenter = new MVPPresenter_DetailActivity(this);
-        initFirebase();
+        presenter = new MVPPresenter_DetailActivity(this,this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            initFirebase();
             id_Movie = bundle.getInt(ID_Movie);
+            peticionesDeListas();
+            button_Suscripcion.setOnClickListener(suscripcionListener);
         }
-        button_Suscripcion.setOnClickListener(suscripcionListener);
-        peticionesDeListas();
         backToHome();
     }
 
@@ -106,13 +106,11 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     //Guardamos la lista de peliculas suscriptas en la lista auxiliar
     @Override
     public void setearListaDeFilms(List<SubsMovie> subsMovieList) {
-        tankCollectionSubsMovies.clear();
         if (subsMovieList != null) {
+            tankCollectionSubsMovies.clear();
             tankCollectionSubsMovies.addAll(subsMovieList);
         }
     }
-
-
 
     //Mostramos el detalle de la pelicula
     @SuppressLint("ResourceAsColor")
@@ -122,7 +120,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         textView_tituloDetail.setText(movie.getTitle());
         textView_textOfOverView.setText(movie.getOverview());
         textView_anioDetail.setText(movie.getRelease_date().substring(0, 4));
-        Glide.with(this).load("https://image.tmdb.org/t/p/original" + movie.getPoster_path()).into(imageView_portada);
+        Glide.with(this).load(getString(R.string.Poster_Path) + movie.getPoster_path()).into(imageView_portada);
         if(progressBar_DetailActivity.isShown()){
             progressBar_DetailActivity.setVisibility(View.GONE);
         }
@@ -130,16 +128,16 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
 
     //Guardamos la pelicula , si estamos suscriptos , mostramos mensaje
     private void setFilmOnSups() {
-        boolean ok = false;
+        boolean estoySuscripto = false;
         collectionSubsMovies.clear();
         collectionSubsMovies.addAll(tankCollectionSubsMovies);
         SubsMovie newFilm = new SubsMovie(movieNow.getTitle(), movieNow.getId(), movieNow.getPoster_path(), movieNow.getBackdrop_path());
         for (SubsMovie film : collectionSubsMovies) {
-            if (film.getTitle().equals(newFilm.getTitle())) {
-                ok = true;
+            if (film.getId() == newFilm.getId()) {
+                estoySuscripto = true;
             }
         }
-        if (ok) {
+        if (estoySuscripto) {
             Toast.makeText(this, getResources().getString(R.string.ya_estas_suscripto_a_esta_pelicula), Toast.LENGTH_SHORT).show();
         } else {
             collectionSubsMovies.add(newFilm);
@@ -150,29 +148,19 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     }
 
     //Mensaje de errores
+
+
     @Override
-    public void falloAlDescargarListaDePeliculasSuscriptas() {
-        Toast.makeText(this,getResources().getString(R.string.Fallo_al_recibir_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
+    public void recibirOkDelPresenter(String s) {
+        Toast.makeText(this,s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void falloConRetrofitPeliculasSuscriptas() {
-        Toast.makeText(this, getResources().getString(R.string.Fallo_de_Retrofit_lista_de_peliculas_suscriptas), Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    public void falloAlRecibirPeliculaMedianteID() {
-        Toast.makeText(this, getResources().getString(R.string.Fallo_descarga_de_pelicula_mediante_id), Toast.LENGTH_SHORT).show();
+    public void mostrarMensajeDeError(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void falloConRetrofitPeliculaMedianteID() {
-        Toast.makeText(this, getResources().getString(R.string.Fallo_con_retrofit_pelicula_mediante_ID), Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void recibirOkDelPresenter() {
-        Toast.makeText(this,getResources().getString(R.string.Exito_al_añadir_la_nueva_Pelicula), Toast.LENGTH_SHORT).show();
-    }
     View.OnClickListener suscripcionListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
-import com.example.neflii.HomeActivity.Utils.ImageHelper;
 import com.example.neflii.R;
 
 import java.util.ArrayList;
@@ -22,9 +20,11 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
 
     private List<SubsMovie> subsMovieList;
     private CellListenerFilmsSups cellListenerFilmsSups;
+    private Context context;
 
-    public Adapter_FilmsSubs_HomeActivity(CellListenerFilmsSups cellListenerFilmsSups) {
+    public Adapter_FilmsSubs_HomeActivity(CellListenerFilmsSups cellListenerFilmsSups,Context context) {
         this.subsMovieList = new ArrayList<>();
+        this.context = context;
         this.cellListenerFilmsSups = cellListenerFilmsSups;
     }
 
@@ -73,7 +73,7 @@ public class Adapter_FilmsSubs_HomeActivity extends RecyclerView.Adapter {
             });
         }
         public void setFilms(SubsMovie filmsups) {
-           Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + filmsups.getPoster_path()).into(imageView_FilmsSups);
+           Glide.with(itemView).load(context.getResources().getString(R.string.Poster_MultiSearch_300) + filmsups.getPoster_path()).into(imageView_FilmsSups);
         }
     }
     public interface CellListenerFilmsSups{

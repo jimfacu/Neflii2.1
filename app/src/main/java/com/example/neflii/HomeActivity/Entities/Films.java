@@ -12,6 +12,10 @@ public class Films implements Parcelable {
     private String backdrop_path;
     private List<Integer> genre_ids;
 
+    public void setGenre_ids(List<Integer> genre_ids) {
+        this.genre_ids = genre_ids;
+    }
+
     public Films(int id, String title, String poster_path, String backdrop_path, List<Integer> genre_ids) {
         this.id = id;
         this.title = title;

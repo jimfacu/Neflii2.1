@@ -15,25 +15,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
+import com.example.neflii.HomeActivity.Entities.ContainerGenres;
 import com.example.neflii.HomeActivity.Entities.Films;
 import com.example.neflii.HomeActivity.Entities.Genres;
 import com.example.neflii.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter {
 
     private List<Films> filmsList;
     private List<Films> tankFilmsList;
-    private List<Genres> genresListMultiSearch;
+    private HashMap<Integer,String> mapGenres;
     private List<SubsMovie> subsListMovies;
+    private Context context;
     private CellListenerMultiSearch cellListenerMultiSearch;
 
-    public Adapter_FilmsMultiSearch_HomeActivity(CellListenerMultiSearch cellListenerMultiSearch) {
+    public Adapter_FilmsMultiSearch_HomeActivity(CellListenerMultiSearch cellListenerMultiSearch,Context context) {
         this.filmsList = new ArrayList<>();
         this.tankFilmsList = new ArrayList<>();
-        this.genresListMultiSearch = new ArrayList<>();
+        this.context = context;
+        mapGenres = new HashMap();
         this.subsListMovies = new ArrayList<>();
         this.cellListenerMultiSearch = cellListenerMultiSearch;
     }
@@ -54,15 +58,6 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
         FilmsMultiSearch filmsMultiSearch = (FilmsMultiSearch) holder;
         filmsMultiSearch.setFilms(films);
 
-    }
-
-    //Recibimos lista de Generos
-    public void insertListGenresMultiSearch(List<Genres> genresList){
-        if(genresList!= null){
-            genresListMultiSearch.clear();
-            genresListMultiSearch.addAll(genresList);
-            notifyDataSetChanged();
-        }
     }
 
     //Recibimos lista de peliculas suscriptas
@@ -89,6 +84,14 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
             filmsList.clear();
             filmsList.addAll(tankFilmsList);
             notifyDataSetChanged();
+        }
+    }
+
+    public void insertListGenres(ContainerGenres containerGenres){
+        if(containerGenres != null){
+            for(Genres genres : containerGenres.getGenres()){
+                mapGenres.put(genres.getId(),genres.getName());
+            }
         }
     }
 
@@ -123,43 +126,34 @@ public class Adapter_FilmsMultiSearch_HomeActivity extends RecyclerView.Adapter 
                 @Override
                 public void onClick(View view) {
                     cellListenerMultiSearch.addFilmSups(filmsList.get(getAdapterPosition()));
-                    button_AddSups.setText("Agregado");
+                    button_AddSups.setText(context.getResources().getString(R.string.Agregado));
                     button_AddSups.setTextColor(R.color.negro);
                     button_AddSups.setBackgroundResource(R.color.Blanco);
                 }
             });
-
         }
         @SuppressLint("ResourceAsColor")
         public void setFilms(Films films){
             textView_FilmsMultiSearch.setText(films.getTitle());
-            textView_filmsMultiSearchCategory.setText(setCategoria(films));
-            Glide.with(itemView).load("https://image.tmdb.org/t/p/w300" + films.getPoster_path()).into(imageView_FilmsMultiSearch);
+            textView_filmsMultiSearchCategory.setText(mapGenres.get(films.getGenre_ids().get(0)));
+            Glide.with(itemView).load( context.getResources().getString(R.string.Poster_MultiSearch_300)+ films.getPoster_path()).into(imageView_FilmsMultiSearch);
             if(chekeoSups(films)){
-                button_AddSups.setText("Agregado");
+                button_AddSups.setText(context.getResources().getString(R.string.Agregado));
                 button_AddSups.setTextColor(R.color.negro);
                 button_AddSups.setBackgroundResource(R.color.Blanco);
             }
         }
-        private String setCategoria(Films films) {
-            String categoria = "";
-            for (Genres genres : genresListMultiSearch) {
-                if (films.getGenre_ids().get(0) == genres.getId()) {
-                    categoria = genres.getName();
-                }
-            }
-            return categoria;
-        }
+
 
         //Chequeo si la pelicula ya esta en mi lista de suscriptas
         private boolean chekeoSups(Films films){
-            boolean ok = false;
+            boolean estoySuscripto = false;
             for(SubsMovie subsMovie : subsListMovies){
                 if(subsMovie.getId() == films.getId()){
-                    ok = true;
+                    estoySuscripto = true;
                 }
             }
-            return ok;
+            return estoySuscripto;
         }
     }
     public interface CellListenerMultiSearch{
