@@ -30,17 +30,18 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
 
     private ContractHomeActivity.Presenter presenter;
     private Context context;
+    private  ServiceApi_HomeActivity serviceApi;
 
 
 
     public MVPInteractor_HomeActivity(ContractHomeActivity.Presenter presenter, Context context) {
         this.presenter = presenter;
         this.context = context;
+        serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
      }
 
     @Override
     public void pedirListaMultiSearchAlServicio(String nameFilm) {
-        ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
         Call<ContainerFilms>  call = serviceApi.getMultiSearchFilms(context.getString(R.string.Api_Key),nameFilm);
         call.enqueue(new Callback<ContainerFilms>() {
             @Override
@@ -60,7 +61,6 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
 
     @Override
     public void pedirListaDePeliculasPopularesAlServicio() {
-        ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
         Call<ContainerFilms> call = serviceApi.getTrendingFilms(Constants.KEY_ALL,Constants.KEY_WEEK,context.getString(R.string.Api_Key));
         call.enqueue(new Callback<ContainerFilms>() {
             @Override
@@ -80,7 +80,6 @@ public class MVPInteractor_HomeActivity implements ContractHomeActivity.Interact
 
     @Override
     public void pedirListaDeGenerosAlServicio() {
-        ServiceApi_HomeActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_HomeActivity.class);
         Call<ContainerGenres> call = serviceApi.getGenresList(context.getString(R.string.Api_Key));
         call.enqueue(new Callback<ContainerGenres>() {
             @Override

@@ -73,7 +73,7 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         presenter = new MVPPresenter_DetailActivity(this,this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            initFirebase();
+            init();
             id_Movie = bundle.getInt(ID_Movie);
             peticionesDeListas();
             button_Suscripcion.setOnClickListener(suscripcionListener);
@@ -81,14 +81,12 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         backToHome();
     }
 
-    //Inicializamos Listas y vistas
-    private void initFirebase() {
+    private void init() {
         button_Suscripcion = findViewById(R.id.suscribirse);
         tankCollectionSubsMovies = new ArrayList<>();
         collectionSubsMovies = new ArrayList<>();
     }
 
-    //Peticiones de listas
     private void peticionesDeListas(){
         progressBar_DetailActivity.setVisibility(View.VISIBLE);
         pedirListaDePeliculasSuscriptas();
@@ -103,7 +101,6 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
         presenter.pedirPeliculaMendianteIDAlServicio(id_Movie);
     }
 
-    //Guardamos la lista de peliculas suscriptas en la lista auxiliar
     @Override
     public void setearListaDeFilms(List<SubsMovie> subsMovieList) {
         if (subsMovieList != null) {
@@ -148,8 +145,6 @@ public class MVPView_DetailActivity extends AppCompatActivity implements Contrac
     }
 
     //Mensaje de errores
-
-
     @Override
     public void recibirOkDelPresenter(String s) {
         Toast.makeText(this,s, Toast.LENGTH_SHORT).show();

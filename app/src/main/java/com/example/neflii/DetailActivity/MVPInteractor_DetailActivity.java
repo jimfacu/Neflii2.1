@@ -29,16 +29,17 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
 
     private Contract_DetailActivity.Presenter presenter;
     private Context context;
+    private ServiceApi_DetailActivity serviceApi;
 
     public MVPInteractor_DetailActivity(Contract_DetailActivity.Presenter presenter,Context context) {
         this.presenter = presenter;
         this.context = context;
+        serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_DetailActivity.class);
     }
 
 
     @Override
     public void pedirPleiculaAlServicioID(int id) {
-        ServiceApi_DetailActivity serviceApi = ServiceRetrofit_HomeActivity.getInstance().create(ServiceApi_DetailActivity.class);
         Call<Movie> call = serviceApi.getMovieById(id, context.getString(R.string.Api_Key),Constants.KEY_EN_US);
         call.enqueue(new Callback<Movie>() {
             @Override
@@ -58,7 +59,6 @@ public class MVPInteractor_DetailActivity implements Contract_DetailActivity.Int
     }
     @Override
     public void pedirListaAFirebase() {
-
         List<SubsMovie> subsMovieslist = new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("films");

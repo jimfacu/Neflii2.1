@@ -27,11 +27,9 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
     private static final String ListMultiSearchGenres = "listGenresMultiSearch";
     private static final String ListSubsMoviesFilms = "listSuubsMoviesFilms";
 
-    //RecyclerView
     private Adapter_FilmsMultiSearch_HomeActivity adapterFilmsMultiSearchHomeActivity;
     private RecyclerView recyclerViewMultiSearch;
 
-    //Container de listas
     private ContainerFilms containerFilmsMultiSearch;
     private ContainerSubsMovie containerSubsMovie;
     private ContainerGenres containerGenres;
@@ -39,7 +37,7 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
     //Interfaz
     private GoToDetaiSearchView goToDetaiSearchView;
 
-    //Metodo donde recibimos la informacion desde la Acitivity
+
     public static MVP_HomeFragmentSearchFilm buildFragmentMultiSearch(ContainerFilms containerFilms, ContainerGenres containerGenres, ContainerSubsMovie containerSubsMovie) {
         MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
         Bundle bundle = new Bundle();
@@ -104,7 +102,6 @@ public class MVP_HomeFragmentSearchFilm extends Fragment implements Adapter_Film
         this.goToDetaiSearchView = (GoToDetaiSearchView) context;
     }
 
-    //Interfaz del Fragment
     public interface GoToDetaiSearchView {
         void goToDetailViewSearch(int id);
         void addFilmToSups(Films film);

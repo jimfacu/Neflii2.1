@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
 import com.example.neflii.HomeActivity.Entities.ContainerFilms;
 import com.example.neflii.HomeActivity.Entities.ContainerGenres;
+import com.example.neflii.HomeActivity.Utils.Utils;
 import com.example.neflii.R;
 
 import java.util.List;
@@ -23,8 +24,6 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
         interactor = new MVPInteractor_HomeActivity(this,context);
     }
 
-    //Peticiones de Listas
-
     @Override
     public void pedirListaMultiSearch(String nameFilm) {
         if(!nameFilm.equals("")){
@@ -39,7 +38,7 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
     }
     @Override
     public void pedirListaDeFilmsPopulares() {
-        if(internetAvalible()) {
+        if(Utils.internetAvalible(context)) {
             interactor.pedirListaDePeliculasPopularesAlServicio();
         }else{
             if(view != null){
@@ -57,7 +56,6 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
     }
 
 
-    //Recibir listas pedidas
     @Override
     public void recibirListaDeFilmsPopulares(ContainerFilms containerFilms) {
         if(view != null){
@@ -96,18 +94,6 @@ public class MVPPresenter_HomeActivity implements ContractHomeActivity.Presenter
         if(view != null){
             view.mostrarMensajeDeFallo(s);
         }
-    }
-
-    private boolean internetAvalible(){
-        boolean connected;
-        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            connected = true;
-        }else{
-            connected = false;
-        }
-        return connected;
     }
 }
 

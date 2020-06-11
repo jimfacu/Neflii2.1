@@ -45,18 +45,13 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm;
-
-    private MenuItem mSearch;
-    private SearchView mSearchView;
-    private Toolbar toolbar;
+    private MVP_HomeFragmentSearchFilm mvpHomeFragmentSearchFilm = new MVP_HomeFragmentSearchFilm();
 
     private List<SubsMovie> subsMovieList;
     private ContainerGenres containerGenresList;
     private ContainerSubsMovie containerSubsMovie;
     private List<SubsMovie> tankListAddFilm;
     private List<SubsMovie> listOfMoviesSups;
-    private int mostrarFragmenten=0;
 
 
 
@@ -86,22 +81,19 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         peticionDeListas();
 
     }
-    // Inicializo las listas
+
     private void initLists() {
         subsMovieList = new ArrayList<>();
         tankListAddFilm = new ArrayList<>();
         listOfMoviesSups = new ArrayList<>();
     }
 
-    //Inicializo los recycler
     private void initRecycler() {
-        //RecyclerView de las peliculas mas populares
         adapterFilmsHomeActivity = new Adapter_Films_HomeActivity(this,this);
         @SuppressLint("WrongConstant") LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewListFilms.setLayoutManager(linearLayoutManager);
         recyclerViewListFilms.setAdapter(adapterFilmsHomeActivity);
 
-        //RecyclerView de las peliculas supscriptas
         adapterFilmsSubsHomeActivity = new Adapter_FilmsSubs_HomeActivity(this,this);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerViewListFilmsSubs.setLayoutManager(linearLayoutManager1);
@@ -111,7 +103,7 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     //Toolbar y Menu
     @SuppressLint("ResourceAsColor")
     private void setToolbar() {
-        toolbar = findViewById(R.id.noFakeToolbar);
+        Toolbar toolbar = findViewById(R.id.noFakeToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(R.color.LetrasBuscador_homeActivity);
     }
@@ -119,8 +111,8 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_items, menu);
-        mSearch = menu.findItem(R.id.searchView_BuscadorDeFilm_activityHome);
-        mSearchView = (SearchView) mSearch.getActionView();
+        MenuItem mSearch = menu.findItem(R.id.searchView_BuscadorDeFilm_activityHome);
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
         mSearchView.setOnQueryTextListener(onQueryTextListener);
         mSearchView.setQueryHint(getResources().getString(R.string.Ingrese_nombre_de_pelicula_a_Buscar));
         return super.onCreateOptionsMenu(menu);
@@ -135,12 +127,9 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
 
         @Override
         public boolean onQueryTextChange(String s) {
-            //Existe la variable mostrarFragment ya que la primera vez va a remover un fragment que todavia no esta seteado
-            if(s.length() == 0 & mostrarFragmenten > 0){
-                 removeFragment();
-                 mostrarFragmenten = 0;
-             }else {
-                mostrarFragmenten = 1;
+            if(s.length() == 0){
+                removeFragment();
+            }else {
                 presenterHomeActivity.pedirListaMultiSearch(s);
             }
             return false;
@@ -150,19 +139,19 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     private void setSwipe(){
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-             public void onRefresh() {
+            public void onRefresh() {
                 peticionDeListas();
                 swipe.setRefreshing(false);
-         }
-     });
+            }
+        });
     }
 
     //Peticion de listas para la HomeActivity
     private void peticionDeListas(){
-            progressBar_MainActivity.setVisibility(View.VISIBLE);
-            presenterHomeActivity.pedirListaDeFilmsPopulares();
-            presenterHomeActivity.pedirListaDeFilmsSups();
-            presenterHomeActivity.pedirListaDeGeneros();
+        progressBar_MainActivity.setVisibility(View.VISIBLE);
+        presenterHomeActivity.pedirListaDeFilmsPopulares();
+        presenterHomeActivity.pedirListaDeFilmsSups();
+        presenterHomeActivity.pedirListaDeGeneros();
     }
 
 
@@ -194,7 +183,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
             subsMovieList.addAll(listSupsFilm);
             tankListAddFilm.addAll(listSupsFilm);
             adapterFilmsSubsHomeActivity.insertFilmsSups(listSupsFilm);
-            //Guardamos la lista recibida en el container de peliculas suscriptas para mandarsela al fragment
             containerSubsMovie = new ContainerSubsMovie(listSupsFilm);
         }
     }
@@ -202,12 +190,9 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
     @Override
     public void darListaGenerosRecycler(ContainerGenres containerGenres) {
         adapterFilmsHomeActivity.insertGenres(containerGenres.getGenres());
-        //Guardamos la lista recibida en el container de generos para mandarsela al fragment
         containerGenresList = containerGenres;
     }
 
-
-    //Ir al detalle de la pelicula seleccionada mediante una ID
     @Override
     public void goToDetail(int id) {
         Intent intent = new Intent(this, MVPView_DetailActivity.class);
@@ -217,7 +202,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         startActivity(intent);
     }
 
-    //Ir al detalle de la pelicula suscripta mediante una ID
     @Override
     public void goToDetailFilmsSups(int id) {
         Intent intent = new Intent(this, MVPView_DetailActivity.class);
@@ -227,7 +211,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         startActivity(intent);
     }
 
-    //Ir al detalle de la pelicula buscada mediante un ID
     @Override
     public void goToDetailViewSearch(int id) {
         Intent intent = new Intent(this, MVPView_DetailActivity.class);
@@ -238,7 +221,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         startActivity(intent);
     }
 
-    //Guardamos la pelicula en firebase
     private void setFilmOnSups(Films film){
         boolean estoysuscripto = false;
         listOfMoviesSups.clear();
@@ -260,14 +242,12 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         }
     }
 
-    //Interfaz del Fragment
     //Agregar una pelicula a la lista de suscriptas seleccionada en el fragment
     @Override
     public void addFilmToSups(Films film) {
         setFilmOnSups(film);
     }
 
-    //Creamos el fragment del buscador de peliculas
     private void setFragment(MVP_HomeFragmentSearchFilm fragment) {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -275,7 +255,6 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         fragmentTransaction.commit();
     }
 
-    //Removemos el fragment creado , si tenemos mas de uno le llegaria por parametro cual fragment quiere remover
     private void removeFragment(){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -283,11 +262,11 @@ public class MVPView_HomeActivity extends AppCompatActivity implements ContractH
         fragmentTransaction.commit();
     }
 
-    //Cuando el search view se cierra , removemos el fragment , puede mejorar
     @Override
     public void onBackPressed() {
         finish();
     }
+
     //Mensaje de error
     @Override
     public void mostrarMensajeDeFallo(String s) {

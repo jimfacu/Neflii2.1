@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import com.example.neflii.DetailActivity.Entities.Movie;
 import com.example.neflii.DetailActivity.Entities.SubsMovie;
+import com.example.neflii.HomeActivity.Utils.Utils;
 import com.example.neflii.R;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class MVPPresenter_DetailActivity implements Contract_DetailActivity.Pres
     //Peticion de peliculas mediante ID
     @Override
     public void pedirPeliculaMendianteIDAlServicio(int id) {
-        if(internetAvalible()) {
+        if(Utils.internetAvalible(context)) {
             interactor.pedirPleiculaAlServicioID(id);
         }else{
             if(view != null){
@@ -53,8 +54,6 @@ public class MVPPresenter_DetailActivity implements Contract_DetailActivity.Pres
         }
     }
 
-
-    //Lista con nueva pelicula desde la view
     @Override
     public void recibirListaConNuevaPelicula(List<SubsMovie> subsMovieLists) {
         interactor.guardarListaConNuevaPelicula(subsMovieLists);
@@ -72,17 +71,5 @@ public class MVPPresenter_DetailActivity implements Contract_DetailActivity.Pres
         if (view != null) {
             view.recibirOkDelPresenter(s);
         }
-    }
-
-    private boolean internetAvalible(){
-        boolean connected;
-        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            connected = true;
-        }else{
-            connected = false;
-        }
-        return connected;
     }
 }
