@@ -17,7 +17,7 @@ WEB SERVICES
 
 * **FirebaseDatabase**
 * **Retrofit**
-* **API **REST **The **MovieDB
+* **API** **REST** **The** **MovieDB**
 
 MATERIAL DESIGN
 
