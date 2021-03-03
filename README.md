@@ -1,4 +1,4 @@
-# Neflii2.1
+# StreamJ
 
 Neflii2.1 es un ejercicio mobile simple en Android Studio para poder ver un listado de peliculas mas populares de una
 
