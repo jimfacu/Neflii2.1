@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Neflii</string>
-    
-    //HomeActivity  
-    
+
+    //HomeActivity
+
     <string name="TODOS">TODOS</string>
     <string name="Tv">TV Show Reminder</string>
     <string name="Categoria">Categoria</string>
     <string name="Suscriptos">Suscriptos</string>
     <string name="Ingrese_nombre_de_pelicula_a_Buscar">Ingrese nombre de pelicula a Buscar</string>
-    
+
     //DetailActivity
     <string name="Titulo">titulo</string>
     <string name="Suscribirme">Suscribirme</string>
@@ -32,13 +32,14 @@
     <string name="Fallo_de_Retrofit_lista_de_peliculas_suscriptas">Fallo de Retrofit lista de peliculas suscriptas!</string>
     <string name="Exito_al_añadir_la_nueva_Pelicula">Exito al añadir la nueva Pelicula!</string>
     <string name="Fallo_descarga_de_pelicula_mediante_id">Fallo descarga de pelicula mediante ID!</string>
-    <string name="Se_agrego_la_pelicula_correctamente">Se_agrego_la_pelicula_correctamente!</string>}
+    <string name="Se_agrego_la_pelicula_correctamente">Se_agrego_la_pelicula_correctamente!</string>
+    }
     <string name="Fallo_con_retrofit_pelicula_mediante_ID">Fallo con retrofit pelicula mediante ID</string>
     <string name="Error_de_conexion_a_Internet">"Error de conexion a Internet"</string>
 
 
     <string name="Suscripto">Desuscribirse</string>
-    
+
     //Interactor
     <string name="Api_Key">64312ffd81ef5d7e20afaa0866b9bec6</string>
     <string name="Films">"films"</string>
